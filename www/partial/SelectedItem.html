@@ -1,0 +1,80 @@
+﻿<ion-view >
+    <ion-header class="bar bar-assertive bar-subheader">
+        <button class="button button-small " ng-click="dashboard()" >
+       <i class="ion-arrow-left-a"></i>
+          Back
+        </button>
+   </ion-header>
+  <ion-content class="has-subheader" > 
+      <div class="row" style="background-color:#E3EAEB" >
+
+          <div class="col">
+<p>ITEM DESCRIPTION </p>
+          </div>
+
+          <div class="col-10">
+<p>QTY </p>
+          </div>
+
+             <div class="col-20">
+<p>TOTAL (NGN) </p>
+          </div>
+
+      </div>
+
+            <div class="row" ng-repeat="row in displayedCollection2" >
+
+          <div class="col">
+<p>{{row.item_desc}} </p>
+          </div>
+
+          <div class="col-10">
+<p>{{row.qty}} </p>
+          </div>
+
+             <div class="col-20">
+<p>{{row.amt|currency:""}} </p>
+          </div>
+
+      </div>
+
+          <div class="row">
+
+          <div class="col">
+
+          </div>
+
+          <div class="col-10">
+
+          </div>
+
+             <div class="col-20">
+<strong>TOTAL AMOUNT:</strong>&nbsp;NGN&nbsp;<strong>{{vTotal|currency:""}}</strong>
+          </div>
+
+      </div>
+       <div class="table-responsive"> 
+      
+
+                    <table style="width:100%;" class="table-bordered center-align">
+
+
+                        <tr class="row">
+                            <td align="center" class="col">
+
+                                <input id="Button1" type="button" class="btn btn-info" ng-click="dashboard()" value="Back" />
+
+                                <input id="Button1" type="button" class="btn btn-info" ng-click="submitForm()" value="Check Out" />
+
+
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+           </div>
+                  
+ </ion-content> 
+           </ion-view >
+ 

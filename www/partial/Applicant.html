@@ -1,0 +1,125 @@
+﻿<ion-view >
+    <ion-header class="bar bar-assertive bar-subheader">
+                <button class="button button-small " ng-click="dashboard()" >
+       <i class="ion-arrow-left-a"></i>
+          Back
+        </button>
+<span style="margin-left: auto;
+    margin-right: auto;">
+        <strong  >APPLICANT INFORMATION FORM</strong> </span> </ion-header>
+  <ion-content class="has-subheader"> 
+      <ion-scroll zooming="true" direction="y" class="theroot" >
+  <table  class="table">
+
+                <tr class="row">
+                    <td class="col-xs-12" align="center" style="background-color:#1C5E55; color:#ffffff;">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="padding col-xs-8">
+                        <span class="notice_header">USER GUIDE:</span><br /><br />
+
+                        <strong> Step 1:</strong> Please complete the Applicant Information form and Click &quot;Proceed to Purchase&quot; to continue<br />
+
+
+
+                        <strong> Step 2:</strong>  This section enables you add and remove items from your online basket.
+                        <br />
+                        <br />
+                        You can add/remove as many items as needed to generate a single invoice and transaction ID for bulk payment using either the Web payment or Bank Deposit gateway<br /><br />
+
+
+                        <strong> &nbsp; </strong>To add a service to your basket, type in the quantity and Click &quot;Add<br />
+                     
+                       
+                        <strong> &nbsp;</strong>To continue, click &quot;Confirm Selected Items&quot;
+                        <br />
+                        <br />
+
+
+
+
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+
+
+
+                       
+                    </td>
+                </tr>
+            </table>
+            
+  
+  <form name="myForm" novalidate class="padding col-xs-8">
+   <div class="list list-inset">
+          <label class="item item-input row" ng-class="{ 'has-errors' : myForm.applicantname2.$invalid, 'no-errors' : myForm.applicantname2.$valid}" >
+              <input type="text" class="col-xs-8" name="myForm.applicantname2" required placeholder="NAME"  ng-model="myForm.applicantname">
+          </label>
+<div class="error-container" ng-show="myForm.applicantname2.$error" ng-messages="myForm.applicantname2.$error">
+              <div ng-messages-include="error-list.html"></div>
+            </div>
+
+          <label class="item item-input row">
+     <textarea  id="address" class="col-xs-8" name="address2" ng-model="myForm.address"  required  placeholder="ADDRESS" rows="7"></textarea>
+             
+          </label>
+
+           <label class="item item-input row">
+              <input type="email" class="col-xs-8" required  name="email2" placeholder="EMAIL" ng-model="myForm.email">
+          </label>
+
+            <label class="item item-input row">
+              <input type="text" class="col-xs-8"  name="mobilenumber2" required placeholder="MOBILE NUMBER" ng-model="myForm.mobile">
+          </label>
+
+         
+
+
+
+
+
+
+         
+
+          <span class="row">
+          <button col id="btn-signup" type="button" ng-click="onReset()" class="button  button-positive">Clear </button> &nbsp;&nbsp;
+           <button col id="btn-signup" type="button" ng-click="submitForm(myForm)" class="button  button-positive">Proceed</button>
+          </span>
+      </div>
+
+
+</form>
+
+
+
+</ion-scroll>
+  </ion-content>
+  </ion-view >
+
+  <script id="home.html" type="text/ng-template">
+    <ion-view view-title="Second page">
+      <ion-content class="padding">
+          <h1>Wellcome</h1>
+      </ion-content>
+    </ion-view>
+  </script>   
+   
+  <script id="error-list.html" type="text/ng-template">  
+    <div class="error" ng-message="required">
+      <i class="ion-information-circled"></i> 
+      This field is required!
+    </div>
+    <div class="error" ng-message="minlength">
+      <i class="ion-information-circled"></i> 
+      Minimum length of this field is 5 characters!
+    </div>
+    <div class="error" ng-message="maxlength">
+      <i class="ion-information-circled"></i> 
+      Maximum length of this field is 20 characters!
+    </div>
+  </script>   

@@ -1,0 +1,164 @@
+﻿
+
+
+<ion-view >
+  <ion-content>
+  
+
+
+
+            <div ng-show=!islogin>
+
+  
+                             <ks-swiper-container initial-slide="3" loop="true"  show-nav-buttons="true" slides-per-view="1" space-between="5" pagination-clickable="true">
+    <ks-swiper-slide class="swiper-slide" ng-repeat="s in myImages" >
+        <img ng-src="{{s}}">
+    </ks-swiper-slide>
+
+  
+</ks-swiper-container>
+
+               
+                    <div class="row " style="margin-left: auto;
+    margin-right: auto;">
+                        <div style="margin-left: auto;
+    margin-right: auto;" " class="col side_img_1 inner_white_text img-responsive"  >
+                         <br/>
+                           <br/>
+                             <br/>
+                               <br/>
+                                 <br/>
+                                   <br/>
+                                     <br/>
+                                       <br/>
+                                         <br/>
+                        
+
+                           
+                        </div>
+                       
+                       
+
+                    </div>
+
+                      <div class="row ">
+                         <br/>
+
+                      </div>
+
+
+
+                     <div class="row " style="margin-left: auto;
+    margin-right: auto;">
+                        
+                        <div class="col side_img_2 inner_white_text img-responsive padding" >
+                            <br/>
+                           <br/>
+                             <br/>
+                               <br/>
+                                 <br/>
+                                   <br/>
+                                     <br/>
+                                       <br/>
+                                         <br/>
+                            
+                        </div>
+                       
+
+                    </div>
+              
+            </div>
+
+            <div  ng-show=islogin  class="padding " >
+<div  ng-show=agent  class="padding " >
+
+                <div class="row "  >
+          <div class="col  "><a href="#/app/Applicant">
+
+                                <img alt="" src="Images/MAKE PAYMENT.png" class="thumbnail img-responsive" / >
+                                 <div >
+              <h6>MAKE PAYMENT</h6>
+            </div>
+                            </a>
+                      
+                            
+                            
+                            </div>
+          <div class="col "> <a href="#/app/ViewBasket">
+
+                                <img alt="" src="Images/SHOPPING CART.png" class="thumbnail img-responsive" />
+                                                                  <div >
+             <h6>VIEW BASKET</h6>
+            </div>
+                            </a>
+             
+                            
+                            </div>
+
+                             <div class="col col-33"> <a href="#">
+
+                                <img alt="" src="Images/REPORTS.png" class="thumbnail img-responsive"  />
+
+                                                   <div >
+              <h6>REPORTS</h6>
+            </div>
+                            </a></div>
+         
+         
+         
+        </div>
+       
+
+
+         <div class="row ">
+          <div class="col col-33 "> <a href="#/app/CheckStatus">
+
+                                <img alt="" src="Images/status.png" class="thumbnail img-responsive" />
+                                                                                 <div >
+             <h6>STATUS</h6>
+            </div>
+                            </a></div>
+          <div class="col col-33 ">  <a href="#/app/UpdateRegistration">
+
+                                <img alt="" src="Images/SETTINGS.png" class="thumbnail img-responsive" />
+                                                                                 <div >
+             <h6>UPDATE PROFILE</h6>
+            </div>
+                            </a></div>
+          <div class="col col-33 ">  <a href="#/app/SendMail">
+
+                                <img alt="" src="Images/MAIL.png" class="thumbnail img-responsive" />
+                                                                                 <div >
+             <h6>CONTACT US</h6>
+            </div>
+                            </a></div>
+         
+         
+        </div>
+
+</div>
+
+
+<div ng-show=!agent>
+
+      <div  > 
+    <div  class="alert alert-info">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+   <h1>  <strong> You need to be an Approved Agent to access platform dashboard content .</strong></h1>
+</div>
+
+        </div>
+
+</div>
+  
+               
+            </div>
+
+         
+
+
+
+  </ion-content>
+</ion-view>
+
+

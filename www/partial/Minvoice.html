@@ -1,0 +1,214 @@
+﻿<ion-view >
+     <ion-header class="bar bar-assertive bar-subheader">
+        <button class="button button-small " ng-click="dashboard()" >
+       <i class="ion-arrow-left-a"></i>
+          Back
+        </button>
+   </ion-header>
+  <ion-content class="has-subheader" > 
+       <div class="table-responsive "> 
+
+            <table class="center-align"  style="font-size:16px;text-align:center;font-weight:normal;width:100%;border:1px solid #000000;">
+
+                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;border:1px solid #000000;">
+                    <td colspan="2" class="col" style="font-size:14px;">
+                        PAYMENT INVOICE SLIP FOR TRANSACTION :&nbsp;{{twallet.ref_no}}
+                    </td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col" align="left" colspan="2">
+                        <span class="notice_header">USER GUIDE:</span><br /><br />
+                        <div style="font-weight:normal;">
+                            This section displays your Payment Invoice Slip<br />
+                            --&nbsp;To select your preferred mode of payment, Click &quot;Proceed to Payment&quot;<br />
+                            <br />
+                            <div style="font-weight:bolder; font-size:16px; color:#f00; text-align:center"> PLEASE NOTE THAT THIS IS NOT A &quot;PAYMENT RECIEPT&quot; !!!</div><br />
+                        </div>
+
+                    </td>
+                </tr>
+                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;">
+                    <td align="center" class="col" colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr class="row" style="font-weight:bold;">
+                    <td class="col" align="center" style="width:50%;" >
+                        <strong> TRANSACTION ID:</strong> {{twallet.transID}}
+                    </td>
+                    <td class="col" align="center" style="width:50%;" >
+                        <strong>DATE:</strong>  {{twallet.xreg_date}}
+                    </td>
+                </tr>
+
+                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;">
+                    <td align="center" class="col" colspan="2">
+                        &nbsp;
+                    </td>
+                </tr>
+
+                <tr class="row">
+                    <td align="center" colspan="2" class="col" style="background-color:#666; color:#ffffff;font-weight:bold;">
+                        ---
+                        APPLICANT INFORMATION ---
+                    </td>
+                    
+                </tr>
+
+                 <tr class="row">
+                    <td class="col" align="left" style="width:7%;"> NAME:</td>
+                    <td class="col" align="left" style="width:43%;"> {{applicant.applicantname}}</td>
+                   
+                </tr>
+
+                 <tr class="row" style="background-color:#E3EAEB;">
+                    <td class="col" align="left">ADDRESS:</td>
+                    <td class="col" align="left"> {{applicant.address}}</td>
+                    
+                </tr>
+
+                 <tr>
+                 <tr class="row">
+                    <td class="col" align="left">  E-MAIL:   </td>
+                    <td class="col" align="left"> {{applicant.email}}</td>
+                    
+                </tr>
+
+                 <tr class="row" style="background-color:#E3EAEB;">
+                    <td class="col" align="left">MOBILE: </td>
+                    <td class="col" align="left">{{applicant.mobile}}</td>
+                   
+                </tr>
+               
+                    <td class="col" align="center" colspan="2" style="background-color:#666; color:#ffffff;font-weight:bold;">
+                        ---
+                        AGENT INFORMATION ---
+                    </td>
+                </tr>
+
+               
+
+                 <tr class="row">
+                  
+                    <td class="col" align="left" style="width:7%;">NAME:  </td>
+
+                    <td class="col" align="left" style="width:43%;"> {{agent.Surname}}</td>
+                </tr>
+
+               
+
+                 <tr class="row" style="background-color:#E3EAEB;">
+                  
+                    <td class="col" align="left"> CODE:</td>
+                    <td class="col" align="left"> {{agent.Sys_ID}}</td>
+                </tr>
+               
+
+                 <tr class="row">
+                  
+                    <td class="col" align="left"> E-MAIL:</td>
+                    <td class="col" align="left"> {{agent.Email}}</td>
+                </tr>
+               
+
+
+                <tr class="row" style="background-color:#E3EAEB;">
+                   
+                    <td class="col" align="left"> MOBILE: </td>
+
+                    <td class="col" align="left">{{agent.PhoneNumber}}</td>
+                </tr>
+
+
+                <tr class="row">
+                    <td align="center" class="col" colspan="4"
+                        style="background-color:#666; color:#ffffff;font-weight:bold;">
+                        --- PAYMENT DETAILS ---
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td align="left" colspan="2" class="col" style="font-size:14px;">
+                        <table style="width:100%;" id="mitems" class="tiger-stripe " st-table="displayedCollection" st-safe-src="ListAgent">
+                            <tr class="row" style="background-color:#1C5E55; color:#ffffff;">
+                                
+
+                                <td class="col">ITEM DESCRIPTION</td>
+                                <td class="col">
+                                    QTY
+                                </td>
+                                
+                                <td class="col" style="text-align:center;">
+                                    TOTAL (NGN)
+                                </td>
+                            </tr>
+
+                            <tr class="row" ng-repeat="row in displayedCollection">
+                               
+                                <td class="col">
+                                    {{row.item_desc}}
+
+                                </td>
+                                <td class="col">
+                                    {{row.qty}}
+                                </td>
+
+                                
+
+                                <td class="col" align="right">
+                                    {{row.amt|currency:""}}
+
+                                </td>
+                            </tr>
+
+
+
+                        </table>
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td colspan="2" class="right-align col">&nbsp;</td>
+                </tr>
+
+                <tr class="row" style="font-size:13px;text-decoration:underline; color:#1C5E55;font-weight:bold;" align="right">
+                    <td colspan="2" class="right-align col">
+                       
+                        TOTAL AMOUNT:&nbsp; NGN&nbsp;{{vTotal|currency:""}}
+                    </td>
+                </tr>
+
+                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;">
+                    <td class="col" colspan="2"></td>
+                </tr>
+
+
+                <tr class="row">
+                    <td align="center" class="col" colspan="2">
+                        POWERED BY<br />
+                        <img src="img/payxlogo.jpg" alt="XPay" width="90px" height="40px" /> <br />
+                        Plot 4. Oluwakayode Jacobs Street Ikate,Lekki Phase 1<br />
+                        <a href="http://www.einaosolutions.com">www.einaosolutions.com</a><br />
+                        Support E-mail(s): <a href="mailto:paymentsupport@einaosolutions.com">paymentsupport@einaosolutions.com</a><br />
+                        Customer Contact Support Line(s): +2349038979681
+                    </td>
+                </tr>
+
+            </table>
+       </div>
+            <table width="100%">
+                <tr class="row">
+                    <td class="col" style="text-align:center;">
+                         <input id="Button1" type="button" class="btn btn-info" ng-click="dashboard()" value="Back" />
+
+                        
+                       
+
+                        &nbsp;
+                        <input id="Button1" type="button" class="btn btn-info" ng-click="submitForm()" value="Proceed To Payment" />
+                    </td>
+                </tr>
+            </table>
+</ion-content> 
+          </ion-view >
+  
