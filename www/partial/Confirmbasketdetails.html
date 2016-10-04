@@ -7,104 +7,100 @@
         </button>
 
 <h1 class="title"><span style="margin-left: auto;
-    margin-right: auto;" >PLEASE CONFIRM THE DETAILS BELOW</span> </h1>
+    margin-right: auto;" >CONFIRM DETAILS </span> </h1>
 
   </ion-header>
   <ion-content class="has-subheader" >
 
-<table    style="margin-left: auto;
-    margin-right: auto;"  >      
+       <div class="col-md-12 " >
 
-        
-        <tr >
-            <td style="text-align:center;" colspan="2" >
-                <br />
-                </td>
-        </tr>      
-       
-         <tr class="center-align" style="background-color:#1C5E55; color:#ffffff;">
-            <td class="auto-style1" colspan="2">ITEM DETAILS</td>
-        </tr>
-         <tr >
-            <td  style="width:100px; background-color:#808080;"> Product Title:</td>    
-            <td > {{Details.product_title}} </td>    
-            </tr>      
-          <tr >
-            <td  style="width:100px; background-color:#808080;"> Item Code:</td>    
-            <td > {{Details.item_code}}  </td>    
-            </tr>  
-        <tr >
-            <td  style="width:100px; background-color:#808080;"> Transaction ID: </td>    
-            <td > {{Details.new_transID}}  </td>    
-            </tr> 
-    
-        <tr >
-            <td  style="width:100px; background-color:#808080;"> Amount: </td>    
-            <td > {{Details.init_amt|currency:""}}  </td>    
-            </tr> 
-        
-           <tr class="center-align" style="background-color:#1C5E55; color:#ffffff;">
-            <td class="center-align" colspan="2">APPLICANT DETAILS</td>
-        </tr>
-         
-        <tr >
-            <td  style="width:100px; background-color:#808080;">Name: </td>    
-            <td > {{Details.xname}}</td>    
-            </tr>  
-        <tr >
-            <td  style="width:100px; background-color:#808080;">Address: </td>    
-            <td > {{Details.address}}</td>    
-            </tr>  
-        <tr >
-            <td  style="width:100px; background-color:#808080;">E-mail :</td>    
-            <td > {{Details.xemail}}</td>    
-            </tr>
-         <tr >
-            <td  style="width:100px; background-color:#808080;">Phone Number:</td>    
-            <td > {{Details.xmobile}}</td>    
-          </tr> 
-         
-        
-           <tr class="center-align" style="background-color:#1C5E55; color:#ffffff;">
-            <td class="center-align" colspan="2">AGENT DETAILS</td>
-        </tr>
-         
-        
-          <tr >
-            <td  style="width:100px; background-color:#808080;">Name: </td>    
-            <td > {{Registration.Surname}}</td>    
-            </tr>  
-        
-        <tr >
-            <td  style="width:100px; background-color:#808080;">E-mail :</td>    
-            <td >  {{Registration.Email}}</td>    
-            </tr>
-         <tr >
-            <td  style="width:100px; background-color:#808080;">Phone Number:</td>    
-            <td > {{Registration.PhoneNumber}}</td>    
-          </tr> 
-        
-           <tr class="center-align" style="background-color:#1C5E55; color:#ffffff;">
-            <td class="center-align" colspan="2"></td>
-        </tr>
-               
+           <div class="center-align" style="background-color:#1C5E55; color:#ffffff;text-align:center;">
 
-<tr>
-<td>
+ <span style="text-align:center;" >ITEM DETAILS</span>
+           </div>
 
-</td>
-    <td >
+             <div  class="center-align" style="text-align:center;">
+            <span  style="background-color:#808080;text-align:center;" > Product Title:</span>    
+            <span style="text-align:center;" > {{Details.product_title}} </span>    
+            </div> 
+
+              <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;"> Item Code:</span>    
+            <span style="text-align:center;" > {{Details.item_code}}  </span>    
+            </div> 
+
+              <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;"> Transaction ID: </span>    
+            <span style="text-align:center;" > {{Details.new_transID}}  </span>    
+            </div> 
+
+              <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;"> Amount: </span>    
+            <span style="text-align:center;" > {{Details.init_amt|currency:""}}  </span>    
+            </div> 
+
+             <div  style="background-color:#1C5E55; color:#ffffff;text-align:center;">
+            <span style="text-align:center;" >APPLICANT DETAILS</span>
+        </div>
+
+        <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;">Name: </span>    
+            <span style="text-align:center;"  > {{Details.xname}}</span>    
+            </div> 
+
+              <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;">Address: </span>    
+            <span style="text-align:center;" > {{Details.address}}</span>    
+            </div> 
+
+             <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;">E-mail :</span>    
+            <span style="text-align:center;"  > {{Details.xemail}}</span>    
+            </div>
+
+              <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;">Phone Number:</span>    
+            <span style="text-align:center;" > {{Details.xmobile}}</span>    
+          </div> 
+
+
+            <div class="center-align" style="background-color:#1C5E55; color:#ffffff;text-align:center;">
+            <span style="text-align:center;"  >AGENT DETAILS</span>
+        </div>
+
+           <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;">Name: </span>    
+            <span style="text-align:center;" > {{Registration.Surname}}</span>    
+            </div> 
+
+             <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;">E-mail :</span>    
+            <span style="text-align:center;" >  {{Registration.Email}}</span>    
+            </div>
+
+                  <div class="center-align" style="text-align:center;" >
+            <span  style="background-color:#808080;text-align:center;">Phone Number:</span>    
+            <span style="text-align:center;" > {{Registration.PhoneNumber}}</span>    
+          </div> 
+
+           <div class="center-align" style="background-color:#1C5E55; color:#ffffff;">
+            <span ></span>
+        </div>
+
+  <div class="center-align" style="text-align:center;">
+
          <button class="button btn-success  "   ng-click="dashboard2()" >
        <i class="ion-document-text"></i>
           File Application
         </button>
 
-    </td>
+  </div>
 
-</tr>
+       </div>
 
 
-          </table>
+
+
 
            </ion-content>
 </ion-view>

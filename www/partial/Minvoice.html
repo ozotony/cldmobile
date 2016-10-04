@@ -7,194 +7,171 @@
    </ion-header>
   <ion-content class="has-subheader" > 
        <div class="table-responsive "> 
+ <div class="col-md-12">
+     <div style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;border:1px solid #000000;"> 
+ PAYMENT INVOICE SLIP FOR TRANSACTION :&nbsp;{{twallet.ref_no}}
+     </div>
 
-            <table class="center-align"  style="font-size:16px;text-align:center;font-weight:normal;width:100%;border:1px solid #000000;">
-
-                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;border:1px solid #000000;">
-                    <td colspan="2" class="col" style="font-size:14px;">
-                        PAYMENT INVOICE SLIP FOR TRANSACTION :&nbsp;{{twallet.ref_no}}
-                    </td>
-                </tr>
-
-                <tr class="row">
-                    <td class="col" align="left" colspan="2">
-                        <span class="notice_header">USER GUIDE:</span><br /><br />
-                        <div style="font-weight:normal;">
-                            This section displays your Payment Invoice Slip<br />
+     <div style="font-weight:normal;">
+This section displays your Payment Invoice Slip<br />
                             --&nbsp;To select your preferred mode of payment, Click &quot;Proceed to Payment&quot;<br />
                             <br />
                             <div style="font-weight:bolder; font-size:16px; color:#f00; text-align:center"> PLEASE NOTE THAT THIS IS NOT A &quot;PAYMENT RECIEPT&quot; !!!</div><br />
-                        </div>
+     </div>
+<div  style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;">
 
-                    </td>
-                </tr>
-                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;">
-                    <td align="center" class="col" colspan="2">
-                        &nbsp;
-                    </td>
-                </tr>
+</div>
+     <div style="font-weight:bold;">
+<strong> TRANSACTION ID:</strong> {{twallet.transID}} <br/>
 
-                <tr class="row" style="font-weight:bold;">
-                    <td class="col" align="center" style="width:50%;" >
-                        <strong> TRANSACTION ID:</strong> {{twallet.transID}}
-                    </td>
-                    <td class="col" align="center" style="width:50%;" >
-                        <strong>DATE:</strong>  {{twallet.xreg_date}}
-                    </td>
-                </tr>
+ <strong>DATE:</strong>  {{twallet.xreg_date}}
+     </div>
 
-                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;">
-                    <td align="center" class="col" colspan="2">
-                        &nbsp;
-                    </td>
-                </tr>
+     <div style="background-color:#1C5E55; color:#ffffff; text-align:center;font-weight:bold;">
 
-                <tr class="row">
-                    <td align="center" colspan="2" class="col" style="background-color:#666; color:#ffffff;font-weight:bold;">
+     </div>
+
+      <div align="center"  style="background-color:#666; color:#ffffff;font-weight:bold;">
                         ---
                         APPLICANT INFORMATION ---
-                    </td>
-                    
-                </tr>
+                    </div>
 
-                 <tr class="row">
-                    <td class="col" align="left" style="width:7%;"> NAME:</td>
-                    <td class="col" align="left" style="width:43%;"> {{applicant.applicantname}}</td>
+ <div >
+                    <span > <b> NAME: </b></span>
+                    <span > {{applicant.applicantname}}</span>
                    
-                </tr>
+                </div>
 
-                 <tr class="row" style="background-color:#E3EAEB;">
-                    <td class="col" align="left">ADDRESS:</td>
-                    <td class="col" align="left"> {{applicant.address}}</td>
+                 <div  style="background-color:#E3EAEB;">
+                    <span ><b>ADDRESS:</b></span>
+                    <span > {{applicant.address}}</span>
                     
-                </tr>
+                </div>
 
-                 <tr>
-                 <tr class="row">
-                    <td class="col" align="left">  E-MAIL:   </td>
-                    <td class="col" align="left"> {{applicant.email}}</td>
+                
+                 <div >
+                    <span > <b> E-MAIL: </b>  </span>
+                    <span > {{applicant.email}}</span>
                     
-                </tr>
+                </div>
 
-                 <tr class="row" style="background-color:#E3EAEB;">
-                    <td class="col" align="left">MOBILE: </td>
-                    <td class="col" align="left">{{applicant.mobile}}</td>
+                 <div  style="background-color:#E3EAEB;">
+                    <span ><b>MOBILE:</b> </span>
+                    <span >{{applicant.mobile}}</span>
                    
-                </tr>
-               
-                    <td class="col" align="center" colspan="2" style="background-color:#666; color:#ffffff;font-weight:bold;">
+                </div>
+
+                 <div  align="center"  style="background-color:#666; color:#ffffff;font-weight:bold;">
                         ---
                         AGENT INFORMATION ---
-                    </td>
-                </tr>
+                    </div >
 
-               
-
-                 <tr class="row">
+                     <div >
                   
-                    <td class="col" align="left" style="width:7%;">NAME:  </td>
+                    <span ><b> NAME:</b>  </span>
 
-                    <td class="col" align="left" style="width:43%;"> {{agent.Surname}}</td>
-                </tr>
+                    <span  > {{agent.Surname}}</span>
+                </div >
 
                
 
-                 <tr class="row" style="background-color:#E3EAEB;">
+                 <div  style="background-color:#E3EAEB;">
                   
-                    <td class="col" align="left"> CODE:</td>
-                    <td class="col" align="left"> {{agent.Sys_ID}}</td>
-                </tr>
+                    <span  ><b> CODE: </b> </span>
+                    <span> {{agent.Sys_ID}}</span>
+                </div>
                
 
-                 <tr class="row">
+                 <div >
                   
-                    <td class="col" align="left"> E-MAIL:</td>
-                    <td class="col" align="left"> {{agent.Email}}</td>
-                </tr>
+                    <span ><b> E-MAIL: </b> </span>
+                    <span > {{agent.Email}}</span>
+                </div>
                
 
 
-                <tr class="row" style="background-color:#E3EAEB;">
+                <div  style="background-color:#E3EAEB;">
                    
-                    <td class="col" align="left"> MOBILE: </td>
+                    <span > <b> MOBILE: <b> </span>
 
-                    <td class="col" align="left">{{agent.PhoneNumber}}</td>
-                </tr>
+                    <span >{{agent.PhoneNumber}}</span>
+                </div>
 
-
-                <tr class="row">
-                    <td align="center" class="col" colspan="4"
+                 <div align="center" 
                         style="background-color:#666; color:#ffffff;font-weight:bold;">
                         --- PAYMENT DETAILS ---
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td align="left" colspan="2" class="col" style="font-size:14px;">
-                        <table style="width:100%;" id="mitems" class="tiger-stripe " st-table="displayedCollection" st-safe-src="ListAgent">
-                            <tr class="row" style="background-color:#1C5E55; color:#ffffff;">
-                                
+                    </div>
 
-                                <td class="col">ITEM DESCRIPTION</td>
-                                <td class="col">
+
+                  
+
+                 
+
+               
+
+     <div id="no-more-tables">
+            
+                        <table  class="col-md-12  table   cf"  st-table="displayedCollection" st-safe-src="ListAgent">
+                           <thead>
+                            <tr  style="background-color:#1C5E55; color:#ffffff;">
+                                
+                                <td >CODE</td>
+                                <td >ITEM DESCRIPTION</td>
+                                <td >
                                     QTY
                                 </td>
                                 
-                                <td class="col" style="text-align:center;">
+                                <td  style="text-align:center;">
                                     TOTAL (NGN)
                                 </td>
                             </tr>
-
-                            <tr class="row" ng-repeat="row in displayedCollection">
-                               
-                                <td class="col">
+                           </thead>
+                           <tbody>
+                            <tr  ng-repeat="row in displayedCollection">
+                               <td data-title="CODE">{{row.item_code}}</td>
+                                <td data-title="DESCRIPTION" >
                                     {{row.item_desc}}
 
                                 </td>
-                                <td class="col">
+                                <td data-title="QUANTITY" >
                                     {{row.qty}}
                                 </td>
 
                                 
 
-                                <td class="col" align="right">
+                                <td data-title="TOTAL (NGN)" >
                                     {{row.amt|currency:""}}
 
                                 </td>
                             </tr>
 
+                            <tr>
+ <td data-title="TOTAL AMOUNT  " >
+                                   {{vTotal|currency:""}}
+
+                                </td>
+                                <tr>
+
+                           </tbody>
 
 
                         </table>
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td colspan="2" class="right-align col">&nbsp;</td>
-                </tr>
-
-                <tr class="row" style="font-size:13px;text-decoration:underline; color:#1C5E55;font-weight:bold;" align="right">
-                    <td colspan="2" class="right-align col">
-                       
-                        TOTAL AMOUNT:&nbsp; NGN&nbsp;{{vTotal|currency:""}}
-                    </td>
-                </tr>
-
-                <tr class="row" style="background-color:#1C5E55; color:#ffffff; text-align:center;">
-                    <td class="col" colspan="2"></td>
-                </tr>
 
 
-                <tr class="row">
-                    <td align="center" class="col" colspan="2">
+     </div>
+
+             <div >
+                    <div align="center" >
                         POWERED BY<br />
                         <img src="img/payxlogo.jpg" alt="XPay" width="90px" height="40px" /> <br />
                         Plot 4. Oluwakayode Jacobs Street Ikate,Lekki Phase 1<br />
                         <a href="http://www.einaosolutions.com">www.einaosolutions.com</a><br />
                         Support E-mail(s): <a href="mailto:paymentsupport@einaosolutions.com">paymentsupport@einaosolutions.com</a><br />
                         Customer Contact Support Line(s): +2349038979681
-                    </td>
-                </tr>
+                    </div>
+                </div>
 
-            </table>
+ </div>
        </div>
             <table width="100%">
                 <tr class="row">

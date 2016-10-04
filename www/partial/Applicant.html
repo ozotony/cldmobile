@@ -9,15 +9,9 @@
         <strong  >APPLICANT INFORMATION FORM</strong> </span> </ion-header>
   <ion-content class="has-subheader"> 
       <ion-scroll zooming="true" direction="y" class="theroot" >
-  <table  class="table">
-
-                <tr class="row">
-                    <td class="col-xs-12" align="center" style="background-color:#1C5E55; color:#ffffff;">
-                        &nbsp;
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td class="padding col-xs-8">
+<div class="row">
+<div class="col-md-12"> 
+             
                         <span class="notice_header">USER GUIDE:</span><br /><br />
 
                         <strong> Step 1:</strong> Please complete the Applicant Information form and Click &quot;Proceed to Purchase&quot; to continue<br />
@@ -37,44 +31,31 @@
                         <br />
                         <br />
 
-
-
-
-
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-
-
-
-                       
-                    </td>
-                </tr>
-            </table>
-            
+</div>
+</div>
+<div class="row">
+           <div class="col-md-12">
   
-  <form name="myForm" novalidate class="padding col-xs-8">
+  <form name="myForm" novalidate >
    <div class="list list-inset">
           <label class="item item-input row" ng-class="{ 'has-errors' : myForm.applicantname2.$invalid, 'no-errors' : myForm.applicantname2.$valid}" >
-              <input type="text" class="col-xs-8" name="myForm.applicantname2" required placeholder="NAME"  ng-model="myForm.applicantname">
+              <input type="text"  name="myForm.applicantname2" required placeholder="NAME"  ng-model="myForm.applicantname">
           </label>
 <div class="error-container" ng-show="myForm.applicantname2.$error" ng-messages="myForm.applicantname2.$error">
               <div ng-messages-include="error-list.html"></div>
             </div>
 
           <label class="item item-input row">
-     <textarea  id="address" class="col-xs-8" name="address2" ng-model="myForm.address"  required  placeholder="ADDRESS" rows="7"></textarea>
+     <textarea  id="address"  name="address2" ng-model="myForm.address"  required  placeholder="ADDRESS" rows="7"></textarea>
              
           </label>
 
            <label class="item item-input row">
-              <input type="email" class="col-xs-8" required  name="email2" placeholder="EMAIL" ng-model="myForm.email">
+              <input type="email"  required  name="email2" placeholder="EMAIL" ng-model="myForm.email">
           </label>
 
             <label class="item item-input row">
-              <input type="text" class="col-xs-8"  name="mobilenumber2" required placeholder="MOBILE NUMBER" ng-model="myForm.mobile">
+              <input type="text"   name="mobilenumber2" required placeholder="MOBILE NUMBER" ng-model="myForm.mobile">
           </label>
 
          
@@ -86,14 +67,18 @@
 
          
 
-          <span class="row">
+          <span >
           <button col id="btn-signup" type="button" ng-click="onReset()" class="button  button-positive">Clear </button> &nbsp;&nbsp;
            <button col id="btn-signup" type="button" ng-click="submitForm(myForm)" class="button  button-positive">Proceed</button>
           </span>
       </div>
+      </form>
 
 
-</form>
+            
+           </div>
+</div>
+
 
 
 

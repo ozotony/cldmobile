@@ -63,46 +63,46 @@ AMOUNT(NGN)
         <div class="table-responsive "> 
  
   <ion-scroll zooming="true" direction="y" delegate-handle="main-list" >
-      <table st-table="displayedCollection" st-safe-src="ListAgent" style="width:100%;" class="center-align padding" style="border:1px dashed #000; font-size:11px;margin-left: auto;
-    margin-right: auto;" >
-                        <thead>
-                            <tr bgcolor="#E3EAEB" class="row">
+      
+    
+         
+      
+      <div id="no-more-tables">
+      <table  st-table="displayedCollection" st-safe-src="ListAgent"   class="col-md-12  table   cf"  >
+                        <thead class="cf">
+                            <tr bgcolor="#E3EAEB" >
                                 
-                                <th st-sort="reg_dt" class="col padding" >DESC</th>
-                               
-                                <th st-sort="product_title" class="col" >AMOUNT(NGN)</th>
-                                <th st-sort="product_title" class="col"  >QUANTITY</th>
+                                <th>CODE</th>
+                                 <th>DESCRIPTION</th>
+                                <th>AMOUNT(NGN)</th>
+                                <th>QUANTITY</th>
 
 
-                                <th class="col" ></th>
-                             
-
-                            <tr class="row">
-                                <th colspan="4" class="col"><input st-search="" class="form-control" placeholder="global search ..." type="text" /></th>
-                            </tr>
-
-                            </tr>
-
-                        <tbody>
-                            <tr ng-repeat="row in displayedCollection" class="row" >
-
-
-
-                               
-                                <td class="col padding" >{{row.xdesc}}</td>
-                                
-                                <td align="center" class="col"  >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
-                                <td align="center" class="col"  ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
-
-
-
-
-
+                                <th  ></th>
 
                               
+                             
 
- <td align="left" class="col"  > 
-     <table>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection"  >
+                                <td data-title="CODE">{{row.item_code}}</td>
+ <td data-title="DESCRIPTION">{{row.xdesc}}</td>
+
+
+                               
+                               
+                                
+                                <td  data-title="AMOUNT(NGN)"   >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
+                                <td  data-title="QUANTITY"   ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
+
+
+
+
+ <td> 
+     <table class="col-md-12  table  cf">
          <tr ng-show="showbtn2(row)">
              <td>
  <input id="Button1" type="button" class="btn btn-success" ng-show="showbtn2(row)" ng-click="EditRow(row)" value="Add" />
@@ -117,18 +117,28 @@ AMOUNT(NGN)
      </table>
      
        </td>
+
+                              
+
+
+
+       
                             </tr>
                         </tbody>
                         <tfoot>
-                            <tr class="row">
-                                <td colspan="7" class="text-center col">
-                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+                            <tr >
+                                <td colspan="4" class="text-center col">
+                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="4"></div>
 
 
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
+
+</div>
+
+    
 
 
                     <table >
@@ -160,17 +170,18 @@ AMOUNT(NGN)
              <div class="table-responsive"> 
  
   <ion-scroll zooming="true" direction="y" delegate-handle="main-list" >
-      <table st-table="displayedCollection2" st-safe-src="ListAgent2" style="width:100%;" class="center-align" >
-                        <thead>
-                            <tr bgcolor="#E3EAEB" class="row">
-                                
-                                <th st-sort="reg_dt" class="col padding" >DESC</th>
+      <div id="no-more-tables">
+      <table st-table="displayedCollection2" st-safe-src="ListAgent2" class="col-md-12  table   cf" >
+                        <thead class="cf">
+                            <tr bgcolor="#E3EAEB" >
+                                <th st-sort="reg_dt"  >CODE</th>
+                                <th st-sort="reg_dt"  >DESC</th>
                                
-                                <th st-sort="product_title" class="col" >AMOUNT(NGN)</th>
-                                <th st-sort="product_title" class="col" >QUANTITY</th>
+                                <th st-sort="product_title"  >AMOUNT(NGN)</th>
+                                <th st-sort="product_title"  >QUANTITY</th>
 
 
-                                <th class="col" ></th>
+                                <th  ></th>
                              
 
                             <tr>
@@ -180,25 +191,25 @@ AMOUNT(NGN)
                             </tr>
 
                         <tbody>
-                            <tr ng-repeat="row in displayedCollection2" class="row">
+                            <tr ng-repeat="row in displayedCollection2" >
 
+                      
+                           <td data-title="CODE">{{row.item_code}}</td>
+                               
+                             <td data-title="DESCRIPTION">{{row.xdesc}}</td>
 
 
                                
-                                <td  class="col padding" >{{row.xdesc}}</td>
+                               
                                 
-                                <td align="center" class="col" >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
-                                <td align="center" class="col" ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
+                                <td  data-title="AMOUNT(NGN)"   >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
+                                <td  data-title="QUANTITY"   ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
 
 
 
 
-
-
-                              
-
- <td align="left" class="col"  > 
-     <table>
+ <td> 
+   <table>
          <tr ng-show="showbtn2(row)">
              <td>
  <input id="Button1" type="button" class="btn btn-success" ng-show="showbtn2(row)" ng-click="EditRow3(row)" value="Add" />
@@ -212,11 +223,12 @@ AMOUNT(NGN)
 
      </table>
      
+     
        </td>
                             </tr>
                         </tbody>
                         <tfoot>
-                            <tr class="row">
+                            <tr >
                                 <td colspan="7" class="text-center col">
                                     <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
 
@@ -226,7 +238,7 @@ AMOUNT(NGN)
                         </tfoot>
                     </table>
 
-
+</div>
                     <table >
 
 
@@ -254,45 +266,45 @@ AMOUNT(NGN)
              <div class="table-responsive"> 
  
   <ion-scroll zooming="true" direction="y" delegate-handle="main-list" >
-      <table st-table="displayedCollection3" st-safe-src="ListAgent3" style="width:100%;" class="center-align" >
-                        <thead>
-                            <tr bgcolor="#E3EAEB" class="row">
-                                
-                                <th st-sort="reg_dt" class="col padding" >DESC</th>
+      <div id="no-more-tables">
+      <table st-table="displayedCollection3" st-safe-src="ListAgent3" class="col-md-12  table   cf" >
+                        <thead class="cf">
+                            <tr bgcolor="#E3EAEB" >
+                                <th st-sort="reg_dt"  >CODE</th>
+                                <th st-sort="reg_dt"  >DESC</th>
                                
-                                <th st-sort="product_title" class="col" >AMOUNT(NGN)</th>
-                                <th st-sort="product_title" class="col" >QUANTITY</th>
+                                <th st-sort="product_title"  >AMOUNT(NGN)</th>
+                                <th st-sort="product_title"  >QUANTITY</th>
 
 
-                                <th class="col" ></th>
+                                <th  ></th>
                              
 
-                            <tr class="row">
+                            <tr >
                                 <th colspan="4" class="col"><input st-search="" class="form-control" placeholder="global search ..." type="text" /></th>
                             </tr>
 
                             </tr>
 
                         <tbody>
-                            <tr ng-repeat="row in displayedCollection3" class="row">
+                            <tr ng-repeat="row in displayedCollection3" >
 
+
+                              <td data-title="CODE">{{row.item_code}}</td>
+                               <td data-title="DESCRIPTION">{{row.xdesc}}</td>
 
 
                                
-                                <td class="col padding"  >{{row.xdesc}}</td>
+                               
                                 
-                                <td align="center" class="col"  >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
-                                <td align="center" class="col"  ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
+                                <td  data-title="AMOUNT(NGN)"   >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
+                                <td  data-title="QUANTITY"   ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
 
 
 
 
-
-
-                              
-
- <td align="left" class="col"  > 
-     <table>
+ <td> 
+     <table class="col-md-12  table  cf">
          <tr ng-show="showbtn2(row)">
              <td>
  <input id="Button1" type="button" class="btn btn-success" ng-show="showbtn2(row)" ng-click="EditRow5(row)" value="Add" />
@@ -310,7 +322,7 @@ AMOUNT(NGN)
                             </tr>
                         </tbody>
                         <tfoot>
-                            <tr class="row">
+                            <tr >
                                 <td colspan="7" class="text-center col">
                                     <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
 
@@ -320,7 +332,7 @@ AMOUNT(NGN)
                         </tfoot>
                     </table>
 
-
+</div>
                     <table >
 
 

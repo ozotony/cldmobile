@@ -6,53 +6,49 @@
         </button>
    </ion-header>
   <ion-content class="has-subheader" > 
-      <div class="row" style="background-color:#E3EAEB" >
+<div id="no-more-tables">
+      <table class="col-md-12  table  cf">
+          <thead class="cf">
+                            <tr  >
+                                <th   >CODE</th>
+                                <th  >ITEM DESCRIPTION</th>
+                               
+                                <th   >QTY</th>
+                                <th   >TOTAL (NGN)</th>
 
-          <div class="col">
-<p>ITEM DESCRIPTION </p>
-          </div>
 
-          <div class="col-10">
-<p>QTY </p>
-          </div>
+                            </tr>
+          </thead>
+                             
 
-             <div class="col-20">
-<p>TOTAL (NGN) </p>
-          </div>
+                    <tbody>
+                            <tr ng-repeat="row in displayedCollection2" >
 
-      </div>
+                      
+                           <td data-title="CODE">{{row.item_code}}</td>
 
-            <div class="row" ng-repeat="row in displayedCollection2" >
+                           <td data-title="DESCRIPTION">{{row.item_desc}}</td>
 
-          <div class="col">
-<p>{{row.item_desc}} </p>
-          </div>
+                           <td data-title="QUANTITY">{{row.qty}}</td>
 
-          <div class="col-10">
-<p>{{row.qty}} </p>
-          </div>
+                           <td data-title="AMOUNT">{{row.amt|currency:""}}</td>
+                            </tr>
+                            <tr>
+<td data-title="TOTAL AMOUNT ">NGN&nbsp;<strong>{{vTotal|currency:""}}</strong></td>
 
-             <div class="col-20">
-<p>{{row.amt|currency:""}} </p>
-          </div>
 
-      </div>
 
-          <div class="row">
+                            </tr>
 
-          <div class="col">
+                    </tbody>
 
-          </div>
+                           
 
-          <div class="col-10">
 
-          </div>
+      </table>
 
-             <div class="col-20">
-<strong>TOTAL AMOUNT:</strong>&nbsp;NGN&nbsp;<strong>{{vTotal|currency:""}}</strong>
-          </div>
+</div>
 
-      </div>
        <div class="table-responsive"> 
       
 
@@ -74,7 +70,7 @@
                     </table>
 
            </div>
-                  
+       
  </ion-content> 
            </ion-view >
  
