@@ -3,9 +3,29 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app =angular.module('starter', ['ionic','ui.router','ngCordova','ksSwiper','LocalStorageModule','angular-loading-bar','smart-table','ngModal','ngMessages','720kb.datepicker','angular-momentjs','ngSanitize']) ;
+var app =angular.module('starter', ['ionic','ui.router','ngCordova','ksSwiper','LocalStorageModule','angular-loading-bar','smart-table','ngModal','ngMessages','720kb.datepicker','angular-momentjs','ngSanitize' ,'ui.bootstrap','ngAnimate','vAccordion','app2']) ;
+
+app.config(function($ionicConfigProvider) {
+  $ionicConfigProvider.views.maxCache(0);
+
+  // note that you can also chain configs
+  
+});
+  app.config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }
+    ]);
+
+   
+
+  
 
 
+  
+    app.config(function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptorService');
+    });
 
 app.factory("$fileFactory", function($q) {
 
@@ -82,7 +102,19 @@ app.run(function($ionicPlatform) {
   });
 }) ;
 
-
+app.directive('ionicstringtohtml', ['$compile', function($compile) {
+    return function(scope, element, attrs) {
+      scope.$watch(
+        function(scope) {
+          return scope.$eval(attrs.inputstring);
+        },
+        function(value) {
+          element.html(value);
+          $compile(element.contents())(scope);
+        }
+      );
+    };
+  }])
 app.directive('tabs', function() {
     return {
       restrict: 'E',
@@ -141,6 +173,7 @@ app.directive('tabs', function() {
     })
             .state('app.Home', {
                 url: '/',
+                 cache: false,
                  views: {
         'menuContent' :{
           templateUrl: "partial/Index2.html",
@@ -208,16 +241,7 @@ app.directive('tabs', function() {
                          
                        })
 
-                          .state('app.TrademarkStatus', {
-                           url: '/TrademarkStatus',
-                            views: {
-        'menuContent' :{
-          templateUrl: "partial/TrademarkStatus.html",
-          controller: 'TrademarkStatusController'
-        }
-      }
-                         
-                       })
+                          
 
                           .state('app.PatentStatus', {
                            url: '/PatentStatus',
@@ -241,6 +265,41 @@ app.directive('tabs', function() {
                          
                        })
 
+                        .state('app.TrademarkPaymentReport', {
+                           url: '/TrademarkPaymentReport',
+                            views: {
+        'menuContent' :{
+          templateUrl: "partial/TrademarkPaymentReport.html",
+          controller: 'TrademarkPaymentReportController'
+        }
+      }
+                         
+                       })
+
+                        .state('app.PatentPaymentReport', {
+                           url: '/PatentPaymentReport',
+                            views: {
+        'menuContent' :{
+          templateUrl: "partial/PatentPaymentReport.html",
+          controller: 'PatentPaymentReportController'
+        }
+      }
+                         
+                       })
+
+
+                       .state('app.DesignPaymentReport', {
+                           url: '/DesignPaymentReport',
+                            views: {
+        'menuContent' :{
+          templateUrl: "partial/DesignPaymentReport.html",
+          controller: 'DesignPaymentReportController'
+        }
+      }
+                         
+                       })
+
+
                         .state('app.PaymentStatus', {
                            url: '/PaymentStatus',
                             views: {
@@ -251,6 +310,42 @@ app.directive('tabs', function() {
       }
                          
                        })
+
+                        .state('app.ApplicationStatus', {
+                           url: '/ApplicationStatus',
+                            views: {
+        'menuContent' :{
+          templateUrl: "partial/ApplicationStatus.html",
+          controller: 'ApplicationStatusController'
+        }
+      }
+                         
+                       })
+
+
+                         .state('app.ApplicationStatus2', {
+                           url: '/ApplicationStatus2',
+                            views: {
+        'menuContent' :{
+          templateUrl: "partial/ApplicationStatus2.html",
+          controller: 'ApplicationStatus2Controller'
+        }
+      }
+                         
+                       })
+
+
+                        .state('app.TrademarkStatus', {
+                           url: '/TrademarkStatus',
+                            views: {
+        'menuContent' :{
+          templateUrl: "partial/TrademarkStatus.html",
+          controller: 'TrademarkStatusController'
+        }
+      }
+                         
+                       })
+
 
                          .state('app.SendMail', {
                            url: '/SendMail',
@@ -509,8 +604,63 @@ app.directive('tabs', function() {
 
 
 
- app.controller('AppCtrl', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicSideMenuDelegate,$ionicHistory ) {
+ app.controller('AppCtrl', function ($scope, $http, $rootScope ,$ionicModal,localStorageService,  $location,authService,$window,$ionicSideMenuDelegate,$ionicHistory,$sce,$state,$filter ) {
 
+$scope.submitForm3= function () {
+
+  //  alert($rootScope.htmlPopover )
+
+   $scope.calendarHTML=$rootScope.htmlPopover;
+$scope.modal.show()
+
+ }
+
+ $scope.submitForm4= function () {
+alert("called")
+ $state.go('app.logout')
+
+ }
+
+ $ionicModal.fromTemplateUrl('templates/modal2.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+
+if (localStorageService.get("baskets") == null) {
+
+    $rootScope.TrademarkCount = 0;
+
+    $rootScope.PatentCount = 0;
+
+    $rootScope.DesignCount = 0;
+
+    $rootScope.TotalCount = 0;
+    $rootScope.Accreditation = 0;
+    $rootScope.vcount = 0;;
+
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color:black ">Trademark (' + $rootScope.TrademarkCount + ') <br/><br/><br/><br/><br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+
+    
+}
+
+else {
+
+    var aap2 = localStorageService.get("baskets");
+    $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+    $rootScope.PatentCount = aap2.PatentCount;
+
+    $rootScope.DesignCount = aap2.DesignCount;
+
+    $rootScope.Accreditation = aap2.Accreditation;
+
+    $rootScope.TotalCount = aap2.TotalCount;
+    $rootScope.vcount = aap2.vcount;;
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+}
 $scope.goBack = function () {
 
 $ionicHistory.goBack();
@@ -542,8 +692,8 @@ $scope.toggleSideMenu = function() {
 
                var dx = localStorageService.get("user");
 
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
+             //  $rootScope.vurl = dx.imageurl + dx.Principal;
+             //  $rootScope.vurl2 = dx.imageurl + dx.logo;
 
                 if (localStorageService.get("vcount") != null) {
                     var ppx = localStorageService.get("vcount")
@@ -565,125 +715,235 @@ $scope.toggleSideMenu = function() {
            }
 
  });
- app.controller('Home3Controller', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window, $ionicHistory ) {
+ app.controller('Home3Controller', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$sce, $filter) {
  
 
- $rootScope.agent = localStorageService.get("agent")
+ 
+$rootScope.$on('refr', function() {
+
+    if (localStorageService.get("Email") != null) {
+    var ddx = localStorageService.get("Email");
+    // alert("inside logged")
+
+    $scope.itemsByPage = 50;
+    $scope.ListAgent = ddx.data;
+    $scope.displayedCollection = [].concat($scope.ListAgent);
+
+}
+     
+   });
 
 
-  
-  if (localStorageService.get("username") == null) {
-               //  alert("username=" + localStorageService.get("username"))
+               if (localStorageService.get("username") == null) {
 
-               $rootScope.islogin = false;
+                 
+                   //  alert("username=" + localStorageService.get("username"))
 
-               $rootScope.islogout = true;
-           }
+                   $rootScope.islogin = false;
 
-           else {
+                   $rootScope.islogout = true;
 
-               $rootScope.islogin = true;
-
-               $rootScope.islogout = false;
-               $rootScope.username = localStorageService.get("username")
-
-               var dx = localStorageService.get("user");
-
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
-
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
                   
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
 
-                }
 
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
-               //  authService2.CheckAccess();
 
-           }
+               }
+
+else {
+
+     
+                   var vtokendate = localStorageService.get("access_tokenexpire")
+var vtokendate2 = new Date(vtokendate);
+
+var vtokendate3 = new Date();
+
+
+
+var tdate = dates.compare(vtokendate2, vtokendate3);
+
+if (tdate < 0) {
+  //  $location.path("/app/logout");
+
+   // return;
+
+}
+
+
+    if (localStorageService.get("Email") != null) {
+    var ddx = localStorageService.get("Email");
+    // alert("inside logged")
+
+    $scope.itemsByPage = 50;
+    $scope.ListAgent = ddx.data;
+    $scope.displayedCollection = [].concat($scope.ListAgent);
+
+}
+
+
+
+$rootScope.agentRole = localStorageService.get("agentRole");
+
+$rootScope.islogin = true;
+
+$rootScope.islogout = false;
+
+$rootScope.username = localStorageService.get("username")
+
+
+
+//   authService2.checkaccess2();conta
+
+
+
+}
+
+
+
+$rootScope.HeaderMessage = "Mails";
+
+$rootScope.isFee = true;
+//  if (localStorageService.get("Email") != null) {
+$rootScope.count22 = '22b';
+
+
+//   }
+
+//  localStorageService.set("count", '3');
+
+// var aap = localStorageService.get("count");
+
+
+
+
+if (localStorageService.get("baskets") == null) {
+
+    $rootScope.TrademarkCount = 0;
+
+    $rootScope.PatentCount = 0;
+
+    $rootScope.DesignCount = 0;
+
+    $rootScope.TotalCount = 0;
+    $rootScope.Accreditation = 0;
+    $rootScope.vcount = 0;;
+
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black; ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ')  <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+
+    
+}
+
+else {
+
+    var aap2 = localStorageService.get("baskets");
+    $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+    $rootScope.PatentCount = aap2.PatentCount;
+
+    $rootScope.DesignCount = aap2.DesignCount;
+
+    $rootScope.Accreditation = aap2.Accreditation;
+
+    $rootScope.TotalCount = aap2.TotalCount;
+    $rootScope.vcount = aap2.vcount;;
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+}
+
+// alert(aap)
+$rootScope.count = '0';
+
+$rootScope.count2 = '3';
+
+             
+
+$scope.oneAtATime = true;
+
+$scope.add2 = function (vrow) {
+    var serviceBase2 = 'http://88.150.164.30/EinaoTestEnvironment.IPO/Handlers/GetEmail2.ashx';
+
+    var Encrypt = {
+        vid: vrow.id
+    }
+
+
+    $http({
+        method: 'POST',
+        url: serviceBase2,
+        transformRequest: function (obj) {
+            var str = [];
+            for (var p in obj)
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            return str.join("&");
+        },
+        data: Encrypt,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;' }
+    })
+      .success(function (response) {
+          var dd = [];
+
+          dd = response;
+
+          $scope.itemsByPage = 10;
+          $scope.ListAgent2 = response;
+          $scope.displayedCollection2 = [].concat($scope.ListAgent2);
+
+
+
+          //  IpoTradeMarks2(response.Email, response.Firstname, response.CompanyAddress, response.xid, response.PhoneNumber)
+          //  ajaxindicatorstop();
+
+      })
+      .error(function (response) {
+          //   ajaxindicatorstop();
+      });
+
+    // $rootScope.xid = vrow.xid
+    $state.go('form.detail')
+}
+
+
+
+
+$scope.add5 = function (vrow) {
+
+    if (vrow.Status) {
+
+        return false
+    }
+    else {
+
+        return true;
+    }
+
+
+}
+
+
+
 
 $scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
-          
+
+
+
+var urlIpobase = "http://88.150.164.30/EinaoTestEnvironment.IPO/";
+
+
+$scope.$on('$viewContentLoaded', function () {
+
+    $scope.items = ['Corporate'];
+
+    // alert($rootScope.Sys_ID)
+
+    //Here your view content is fully loaded !!
+});
 
 
 
 
 
 
-       });
 
-
-       app.controller('ViewBasketController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ) {
  
-
-  $scope.dashboard = function () {
-
-$ionicHistory.goBack();
- }
-$scope.Registration = localStorageService.get("user");
- var id=$scope.Registration.xid ;
-
-    authService.Basket(id).then(function (data, status) {
-                   $scope.dd = data;
-
-
-               });
- 
-  
-  if (localStorageService.get("username") == null) {
-               //  alert("username=" + localStorageService.get("username"))
-
-               $rootScope.islogin = false;
-
-               $rootScope.islogout = true;
-           }
-
-           else {
-
-               $rootScope.islogin = true;
-
-               $rootScope.islogout = false;
-               $rootScope.username = localStorageService.get("username")
-
-               var dx = localStorageService.get("user");
-
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
-
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
-                  
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
-
-                }
-
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
-               //  authService2.CheckAccess();
-
-           }
-
-$scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
-          
-
-
-
-
 
 
        });
@@ -751,125 +1011,150 @@ $scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
        });
 
 
-        app.controller('TrademarkStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ) {
-  $scope.varray44 = [{ Transaction_Status: 'TransactionId', Transaction_Status2:'TransactionId' }, { Transaction_Status: 'TpNumber', Transaction_Status2: 'TpNumber' }] ;
- 
-$scope.vshow = false;
-$scope.Getstatus ="";
-$scope.SelectedValue ="";
+      
 
 
-
-$scope.Ddx3 = function() { 
-
-    $("input#SelectedValue").val("");
-    $("#Getstatus").val("").change();
-     $scope.vshow = false;
-   
-
-}
- $scope.Ddx = function(dxp,dxp2) {  
-  
-
-if (dxp =="TransactionId") {
-
-authService.getTrademarkStatus(dxp2).then(function (data, status) {
-                   $scope.dd = data;
-                   if (data.vcount > 0) {
-$scope.vshow = true;
-
-                   }
-
-                   else {
-
-                       swal("","Record Not Found" ,"error") ;
-                       $scope.vshow = false;
-
-                   }
-
-               });
-
-}
-
-if (dxp =="TpNumber") {
-
-authService.getTrademarkStatus2(dxp2).then(function (data, status) {
-                   $scope.dd = data;
-                   if (data.vcount > 0) {
-$scope.vshow = true;
-
-                   }
-
-                   else {
-
-                       swal("","Record Not Found" ,"error") ;
-                       $scope.vshow = false;
-
-                   }
-
-               });
-
-}
-
- }
-
-
- $scope.dashboard = function () {
-
-$ionicHistory.goBack();
- }
-$scope.Registration = localStorageService.get("user");
-
-
-
-
-
-   
- var id=$scope.Registration.xid ;
-
- 
-  
-  if (localStorageService.get("username") == null) {
+        app.controller('PatentStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce, $filter ) {
+   if (localStorageService.get("username") == null) {
                //  alert("username=" + localStorageService.get("username"))
 
                $rootScope.islogin = false;
 
                $rootScope.islogout = true;
+               return;
            }
 
            else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
+               var vtokendate2 = new Date(vtokendate);
 
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+               //    $location.path("/app/logout");
+
+                //   return;
+
+               }
+
+               $rootScope.agentRole = localStorageService.get("agentRole");
                $rootScope.islogin = true;
 
                $rootScope.islogout = false;
                $rootScope.username = localStorageService.get("username")
+                $rootScope.user = localStorageService.get("user")
 
-               var dx = localStorageService.get("user");
 
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
 
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
-                  
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
 
-                }
 
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
                //  authService2.CheckAccess();
 
            }
+           $rootScope.HeaderMessage = "Status";
 
-$scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
-          
+           $rootScope.isFee = true;
+
+           localStorageService.set("count", '13');
+
+           $rootScope.count22 = '29';
+
+           var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+           $rootScope.count2 = '13';
+           $scope.ApplicantForm = {};
+
+
+
+
+           if (localStorageService.get("baskets") == null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.Accreditation = 0;
+               $rootScope.vcount = 0;;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.Accreditation = aap2.Accreditation;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+
+           $scope.submitForm3 = function () {
+
+               $window.print();
+
+
+           }
+
+
+
+           $scope.vshow = false;
+           $scope.Getstatus = "";
+           $scope.SelectedValue = "";
+
+
+
+           $scope.Ddx3 = function () {
+
+               $("input#SelectedValue").val("");
+               // $("#Getstatus").val("").change();
+               $scope.vshow = false;
+
+
+           }
+           $scope.Ddx = function (dxp2) {
+
+
+
+
+               authService.getPatentStatus(dxp2).then(function (data, status) {
+                   $scope.dd = data;
+                   if (data.vcount > 0) {
+                       $scope.vshow = true;
+
+                   }
+
+                   else {
+
+                       swal("", "Record Not Found", "error");
+                       $scope.vshow = false;
+
+                   }
+
+               });
+
+
+
+
+
+           }
+
+
+
 
 
 
@@ -879,38 +1164,134 @@ $scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
        });
 
 
-        app.controller('PatentStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ) {
-  $scope.varray44 = [{ Transaction_Status: 'TransactionId', Transaction_Status2:'TransactionId' }, { Transaction_Status: 'TpNumber', Transaction_Status2: 'TpNumber' }] ;
- 
-$scope.vshow = false;
-$scope.Getstatus ="";
-$scope.SelectedValue ="";
+        app.controller('DesignStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce, $filter ) {
+  if (localStorageService.get("username") == null) {
+               //  alert("username=" + localStorageService.get("username"))
+
+               $rootScope.islogin = false;
+
+               $rootScope.islogout = true;
+               return;
+           }
+
+           else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
+               var vtokendate2 = new Date(vtokendate);
+
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+                  // $location.path("/logout");
+
+                  // return;
+
+               }
+
+               $rootScope.agentRole = localStorageService.get("agentRole");
+               $rootScope.islogin = true;
+
+               $rootScope.islogout = false;
+               $rootScope.username = localStorageService.get("username")
+
+                $rootScope.user = localStorageService.get("user")
 
 
 
-$scope.Ddx3 = function() { 
-
-    $("input#SelectedValue").val("");
-   // $("#Getstatus").val("").change();
-     $scope.vshow = false;
-   
-
-}
- $scope.Ddx = function(dxp2) {  
-  
 
 
+               //  authService2.CheckAccess();
 
-authService.getPatentStatus(dxp2).then(function (data, status) {
+           }
+           $rootScope.HeaderMessage = "Status";
+
+           $rootScope.isFee = true;
+
+           localStorageService.set("count", '13');
+
+           $rootScope.count22 = '29';
+
+           var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+           $rootScope.count2 = '13';
+           $scope.ApplicantForm = {};
+
+
+
+
+           if (localStorageService.get("baskets") == null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.Accreditation = 0;
+               $rootScope.vcount = 0;;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.Accreditation = aap2.Accreditation;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+           $scope.submitForm3 = function () {
+
+               $window.print();
+
+
+           }
+
+
+           $scope.varray44 = [{ Transaction_Status: 'TransactionId', Transaction_Status2: 'TransactionId' }, { Transaction_Status: 'TpNumber', Transaction_Status2: 'TpNumber' }];
+
+           $scope.vshow = false;
+           $scope.Getstatus = "";
+           $scope.SelectedValue = "";
+
+
+
+           $scope.Ddx3 = function () {
+
+               $("input#SelectedValue").val("");
+               // $("#Getstatus").val("").change();
+               $scope.vshow = false;
+
+
+           }
+           $scope.Ddx = function (dxp2) {
+
+
+
+
+               authService.getDesignStatus(dxp2).then(function (data, status) {
                    $scope.dd = data;
                    if (data.vcount > 0) {
-$scope.vshow = true;
+                       $scope.vshow = true;
 
                    }
 
                    else {
 
-                       swal("","Record Not Found" ,"error") ;
+                       swal("", "Record Not Found", "error");
                        $scope.vshow = false;
 
                    }
@@ -921,64 +1302,8 @@ $scope.vshow = true;
 
 
 
- }
-
-
- $scope.dashboard = function () {
-
-$ionicHistory.goBack();
- }
-$scope.Registration = localStorageService.get("user");
-
-
-
-
-
-   
- var id=$scope.Registration.xid ;
-
- 
-  
-  if (localStorageService.get("username") == null) {
-               //  alert("username=" + localStorageService.get("username"))
-
-               $rootScope.islogin = false;
-
-               $rootScope.islogout = true;
            }
 
-           else {
-
-               $rootScope.islogin = true;
-
-               $rootScope.islogout = false;
-               $rootScope.username = localStorageService.get("username")
-
-               var dx = localStorageService.get("user");
-
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
-
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
-                  
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
-
-                }
-
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
-               //  authService2.CheckAccess();
-
-           }
-
-$scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
           
 
 
@@ -988,112 +1313,921 @@ $scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
 
        });
 
-
-        app.controller('DesignStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ) {
-  $scope.varray44 = [{ Transaction_Status: 'TransactionId', Transaction_Status2:'TransactionId' }, { Transaction_Status: 'TpNumber', Transaction_Status2: 'TpNumber' }] ;
- 
-$scope.vshow = false;
-$scope.Getstatus ="";
-$scope.SelectedValue ="";
+         app.controller('TrademarkStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce,$filter ) {
 
 
+ if (localStorageService.get("username") == null) {
+               //  alert("username=" + localStorageService.get("username"))
 
-$scope.Ddx3 = function() { 
+               $rootScope.islogin = false;
 
-    $("input#SelectedValue").val("");
-   // $("#Getstatus").val("").change();
-     $scope.vshow = false;
-   
+               $rootScope.islogout = true;
+               return;
+           }
+
+           else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
+               var vtokendate2 = new Date(vtokendate);
+
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+                 // $location.path("/app/logout");
+
+                  // return;
+
+               }
+
+               $rootScope.agentRole = localStorageService.get("agentRole");
+               $rootScope.islogin = true;
+
+               $rootScope.islogout = false;
+               $rootScope.username = localStorageService.get("username")
+                $rootScope.user = localStorageService.get("user")
+
+
+
+
+
+               //  authService2.CheckAccess();
+
+           }
+           $rootScope.HeaderMessage = "Status";
+
+           $rootScope.isFee = true;
+
+           localStorageService.set("count", '13');
+
+           $rootScope.count22 = '28';
+
+           var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+
+           $rootScope.count2 = '13';
+           $scope.ApplicantForm = {};
+
+
+
+
+           if (localStorageService.get("baskets") == null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.Accreditation = 0;
+               $rootScope.vcount = 0;;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.Accreditation = aap2.Accreditation;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+
+           $scope.submitForm3 = function () {
+
+               $window.print();
+
+
+           }
+
+        
+           $scope.varray44 = [{ Transaction_Status: 'TransactionId', Transaction_Status2: 'TransactionId' }, { Transaction_Status: 'TpNumber', Transaction_Status2: 'TpNumber' }];
+
+           $scope.vshow = false;
+           $scope.Getstatus = "";
+           $scope.SelectedValue = "";
+
+
+
+           $scope.Ddx3 = function () {
+
+               $("input#SelectedValue").val("");
+               $("#Getstatus").val("").change();
+               $scope.vshow = false;
+
+
+           }
+           $scope.Ddx = function (dxp, dxp2) {
+
+
+               if (dxp == "TransactionId") {
+
+                   authService.getTrademarkStatus(dxp2).then(function (data, status) {
+                       $scope.dd = data;
+                       if (data.vcount > 0) {
+                           $scope.vshow = true;
+
+                       }
+
+                       else {
+
+                           swal("", "Record Not Found", "error");
+                           $scope.vshow = false;
+
+                       }
+
+                   });
+
+               }
+
+               if (dxp == "TpNumber") {
+
+                   authService.getTrademarkStatus2(dxp2).then(function (data, status) {
+                       $scope.dd = data;
+                       if (data.vcount > 0) {
+                           $scope.vshow = true;
+
+                       }
+
+                       else {
+
+                           swal("", "Record Not Found", "error");
+                           $scope.vshow = false;
+
+                       }
+
+                   });
+
+               }
+
+           }
+
+         });
+
+            app.controller('PatentPaymentReportController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce,$filter,$ionicModal ) {
+  if (localStorageService.get("username") == null) {
+               //  alert("username=" + localStorageService.get("username"))
+
+               $rootScope.islogin = false;
+
+               $rootScope.islogout = true;
+               return;
+           }
+
+           else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
+               var vtokendate2 = new Date(vtokendate);
+
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+                  // $location.path("/logout");
+
+                 //  return;
+
+               }
+
+               $rootScope.agentRole = localStorageService.get("agentRole");
+               $rootScope.islogin = true;
+
+               $rootScope.islogout = false;
+               $rootScope.username = localStorageService.get("username")
+
+
+
+
+
+               //  authService2.CheckAccess();
+
+           }
+           $rootScope.HeaderMessage = "Purchases Report";
+
+           $rootScope.isFee = true;
+
+           localStorageService.set("count", '10');
+
+           $rootScope.count22 = '25';
+
+           var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+
+           $rootScope.count2 = '10';
+           $scope.ApplicantForm = {};
+
+         
+
+
+           if (localStorageService.get("baskets") == null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.vcount = 0;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+            $ionicModal.fromTemplateUrl('templates/modal2.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+
+           $scope.submitForm3 = function () {
+
+               $window.print();
+
+
+           }
+
+           $scope.vchange = function (vrow) {
+                  var akp2 = localStorageService.get("user");
+                       $scope.agent = localStorageService.get("user");
+                       authService.getPaymentReport2(vrow.newtransID, akp2.xid).then(function (data, status) {
+                           $scope.itemsByPage = 6;
+                           $scope.data2 = data
+                           $scope.ListAgent2 = data.fee_details;
+
+                           $scope.displayedCollection2 = [].concat($scope.ListAgent2);
+
+                           $scope.vTotal = 0;
+                           $scope.vTotal = $scope.vTotal + parseFloat($scope.data2.InterSwitchPostField.isw_conv_fee);
+                          
+                           //added
+                           angular.forEach(data.fee_details, function (item) {
+
+                               item.amt = item.tot_amt ;
+                               $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
+
+                               //   $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
+
+
+                           });
+
+
+                            $scope.modal.show() ;
+
+
+
+                       });
+              
+           }
+
+
+
+           var akp = localStorageService.get("user");
+           authService.getPaymentReport("pt", akp.xid).then(function (data, status) {
+               $scope.itemsByPage = 3000000;
+
+               $scope.ListAgent = data;
+
+              $scope.displayedCollection = [].concat($scope.ListAgent);
+
+
+
+           });
+
+
+
+
+            });
+
+
+             app.controller('DesignPaymentReportController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce,$filter,$ionicModal ) {
+  if (localStorageService.get("username") == null) {
+               //  alert("username=" + localStorageService.get("username"))
+
+               $rootScope.islogin = false;
+
+               $rootScope.islogout = true;
+               return;
+           }
+
+           else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
+               var vtokendate2 = new Date(vtokendate);
+
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+                  // $location.path("/logout");
+
+                 //  return;
+
+               }
+
+               $rootScope.agentRole = localStorageService.get("agentRole");
+               $rootScope.islogin = true;
+
+               $rootScope.islogout = false;
+               $rootScope.username = localStorageService.get("username")
+
+
+
+
+
+               //  authService2.CheckAccess();
+
+           }
+           $rootScope.HeaderMessage = "Purchases Report";
+
+           $rootScope.isFee = true;
+
+           localStorageService.set("count", '10');
+
+           $rootScope.count22 = '25';
+
+           var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+
+           $rootScope.count2 = '10';
+           $scope.ApplicantForm = {};
+
+         
+
+
+           if (localStorageService.get("baskets") == null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.vcount = 0;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+            $ionicModal.fromTemplateUrl('templates/modal2.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+
+           $scope.submitForm3 = function () {
+
+               $window.print();
+
+
+           }
+
+           $scope.vchange = function (vrow) {
+                  var akp2 = localStorageService.get("user");
+                       $scope.agent = localStorageService.get("user");
+                       authService.getPaymentReport2(vrow.newtransID, akp2.xid).then(function (data, status) {
+                           $scope.itemsByPage = 6;
+                           $scope.data2 = data
+                           $scope.ListAgent2 = data.fee_details;
+
+                           $scope.displayedCollection2 = [].concat($scope.ListAgent2);
+
+                           $scope.vTotal = 0;
+                           $scope.vTotal = $scope.vTotal + parseFloat($scope.data2.InterSwitchPostField.isw_conv_fee);
+                          
+                           //added
+                           angular.forEach(data.fee_details, function (item) {
+
+                               item.amt = item.tot_amt ;
+                               $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
+
+                               //   $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
+
+
+                           });
+
+
+                            $scope.modal.show() ;
+
+
+
+                       });
+              
+           }
+
+
+
+           var akp = localStorageService.get("user");
+           authService.getPaymentReport("ds", akp.xid).then(function (data, status) {
+               $scope.itemsByPage = 3000000;
+
+               $scope.ListAgent = data;
+
+              $scope.displayedCollection = [].concat($scope.ListAgent);
+
+
+
+           });
+
+
+
+
+            });
+
+
+
+
+              app.controller('TrademarkPaymentReportController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce,$filter,$ionicModal ) {
+  if (localStorageService.get("username") == null) {
+               //  alert("username=" + localStorageService.get("username"))
+
+               $rootScope.islogin = false;
+
+               $rootScope.islogout = true;
+               return;
+           }
+
+           else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
+               var vtokendate2 = new Date(vtokendate);
+
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+                  // $location.path("/logout");
+
+                 //  return;
+
+               }
+
+               $rootScope.agentRole = localStorageService.get("agentRole");
+               $rootScope.islogin = true;
+
+               $rootScope.islogout = false;
+               $rootScope.username = localStorageService.get("username")
+
+
+
+
+
+               //  authService2.CheckAccess();
+
+           }
+           $rootScope.HeaderMessage = "Purchases Report";
+
+           $rootScope.isFee = true;
+
+           localStorageService.set("count", '10');
+
+           $rootScope.count22 = '25';
+
+           var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+
+           $rootScope.count2 = '10';
+           $scope.ApplicantForm = {};
+
+         
+
+
+           if (localStorageService.get("baskets") == null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.vcount = 0;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: white ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+            $ionicModal.fromTemplateUrl('templates/modal2.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+
+           $scope.submitForm3 = function () {
+
+               $window.print();
+
+
+           }
+
+           $scope.vchange = function (vrow) {
+                  var akp2 = localStorageService.get("user");
+                       $scope.agent = localStorageService.get("user");
+                       authService.getPaymentReport2(vrow.newtransID, akp2.xid).then(function (data, status) {
+                           $scope.itemsByPage = 6;
+                           $scope.data2 = data
+                           $scope.ListAgent2 = data.fee_details;
+
+                           $scope.displayedCollection2 = [].concat($scope.ListAgent2);
+
+                           $scope.vTotal = 0;
+                           $scope.vTotal = $scope.vTotal + parseFloat($scope.data2.InterSwitchPostField.isw_conv_fee);
+                          
+                           //added
+                           angular.forEach(data.fee_details, function (item) {
+
+                               item.amt = item.tot_amt ;
+                               $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
+
+                               //   $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
+
+
+                           });
+
+
+                            $scope.modal.show() ;
+
+
+
+                       });
+              
+           }
+
+
+
+           var akp = localStorageService.get("user");
+           authService.getPaymentReport("tm", akp.xid).then(function (data, status) {
+               $scope.itemsByPage = 3000000;
+
+               $scope.ListAgent = data;
+
+              $scope.displayedCollection = [].concat($scope.ListAgent);
+
+
+
+           });
+
+
+
+
+            });
+
+          app.controller('ApplicationStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce,$filter ) {
+  
+  $scope.submitForm = function (aa) {
+
+             if (aa ==undefined) {
+
+                 alert("Select Type") ;
+                 return ;
+             }
+
+             else if (aa =="Trademark") {
+$location.path("/app/TrademarkStatus");
+
+             }
+
+
+              else if (aa =="Patent") {
+$location.path("/app/PatentStatus");
+
+             }
+
+
+              else if (aa =="Design") {
+$location.path("/app/DesignStatus");
+
+             }
+
+
+           }
+
+
+
+   $scope.items = ['Trademark' ,'Patent','Design'];
+  localStorageService.set("count", '13');
+
+           $rootScope.count22 = '28';
+
+           var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+
+           $rootScope.count2 = '13';
+
+
+
+               if (localStorageService.get("username") == null) {
+
+                 
+                   //  alert("username=" + localStorageService.get("username"))
+
+                   $rootScope.islogin = false;
+
+                   $rootScope.islogout = true;
+
+                  
+
+
+
+               }
+
+else {
+
+     
+                   var vtokendate = localStorageService.get("access_tokenexpire")
+var vtokendate2 = new Date(vtokendate);
+
+var vtokendate3 = new Date();
+
+
+
+var tdate = dates.compare(vtokendate2, vtokendate3);
+
+if (tdate < 0) {
+  //  $location.path("/app/logout");
+
+   // return;
 
 }
- $scope.Ddx = function(dxp2) {  
+
+
+    if (localStorageService.get("Email") != null) {
+    var ddx = localStorageService.get("Email");
+    // alert("inside logged")
+
+    $scope.itemsByPage = 50;
+    $scope.ListAgent = ddx.data;
+    $scope.displayedCollection = [].concat($scope.ListAgent);
+
+}
+
+
+
+$rootScope.agentRole = localStorageService.get("agentRole");
+
+$rootScope.islogin = true;
+
+$rootScope.islogout = false;
+
+$rootScope.username = localStorageService.get("username")
+
+
+
+//   authService2.checkaccess2();conta
+
+
+
+}
+
+
+if (localStorageService.get("baskets") == null) {
+
+    $rootScope.TrademarkCount = 0;
+
+    $rootScope.PatentCount = 0;
+
+    $rootScope.DesignCount = 0;
+
+    $rootScope.TotalCount = 0;
+    $rootScope.Accreditation = 0;
+    $rootScope.vcount = 0;;
+
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black; ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ')  <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+
+    
+}
+
+else {
+
+    var aap2 = localStorageService.get("baskets");
+    $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+    $rootScope.PatentCount = aap2.PatentCount;
+
+    $rootScope.DesignCount = aap2.DesignCount;
+
+    $rootScope.Accreditation = aap2.Accreditation;
+
+    $rootScope.TotalCount = aap2.TotalCount;
+    $rootScope.vcount = aap2.vcount;;
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+}
+
+          });
+
+
+
+//added 
+
+  app.controller('ApplicationStatus2Controller', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ,$sce,$filter ) {
   
+  $scope.submitForm = function (aa) {
+
+             if (aa ==undefined) {
+
+                 alert("Select Type") ;
+                 return ;
+             }
+
+             else if (aa =="Trademark") {
+$location.path("/app/TrademarkPaymentReport");
+
+             }
 
 
+              else if (aa =="Patent") {
+$location.path("/app/PatentPaymentReport");
 
-authService.getDesignStatus(dxp2).then(function (data, status) {
-                   $scope.dd = data;
-                   if (data.vcount > 0) {
-$scope.vshow = true;
-
-                   }
-
-                   else {
-
-                       swal("","Record Not Found" ,"error") ;
-                       $scope.vshow = false;
-
-                   }
-
-               });
+             }
 
 
+              else if (aa =="Design") {
+$location.path("/app/DesignPaymentReport");
+
+             }
 
 
-
- }
-
-
- $scope.dashboard = function () {
-
-$ionicHistory.goBack();
- }
-$scope.Registration = localStorageService.get("user");
-  
- var id=$scope.Registration.xid ;
-
- 
-  
-  if (localStorageService.get("username") == null) {
-               //  alert("username=" + localStorageService.get("username"))
-
-               $rootScope.islogin = false;
-
-               $rootScope.islogout = true;
            }
 
-           else {
 
-               $rootScope.islogin = true;
 
-               $rootScope.islogout = false;
-               $rootScope.username = localStorageService.get("username")
+   $scope.items = ['Trademark' ,'Patent','Design'];
+  localStorageService.set("count", '13');
 
-               var dx = localStorageService.get("user");
+           $rootScope.count22 = '28';
 
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
+           var aap = localStorageService.get("count");
 
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
+           // alert(aap)
+           $rootScope.count = '00';
+
+           $rootScope.count2 = '10';
+
+
+
+               if (localStorageService.get("username") == null) {
+
+                 
+                   //  alert("username=" + localStorageService.get("username"))
+
+                   $rootScope.islogin = false;
+
+                   $rootScope.islogout = true;
+
                   
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
-
-                }
-
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
-               //  authService2.CheckAccess();
-
-           }
-
-$scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
-          
 
 
 
+               }
+
+else {
+
+     
+                   var vtokendate = localStorageService.get("access_tokenexpire")
+var vtokendate2 = new Date(vtokendate);
+
+var vtokendate3 = new Date();
 
 
 
-       });
+var tdate = dates.compare(vtokendate2, vtokendate3);
+
+if (tdate < 0) {
+  //  $location.path("/app/logout");
+
+   // return;
+
+}
 
 
+    if (localStorageService.get("Email") != null) {
+    var ddx = localStorageService.get("Email");
+    // alert("inside logged")
+
+    $scope.itemsByPage = 50;
+    $scope.ListAgent = ddx.data;
+    $scope.displayedCollection = [].concat($scope.ListAgent);
+
+}
+
+
+
+$rootScope.agentRole = localStorageService.get("agentRole");
+
+$rootScope.islogin = true;
+
+$rootScope.islogout = false;
+
+$rootScope.username = localStorageService.get("username")
+
+
+
+//   authService2.checkaccess2();conta
+
+
+
+}
+
+
+if (localStorageService.get("baskets") == null) {
+
+    $rootScope.TrademarkCount = 0;
+
+    $rootScope.PatentCount = 0;
+
+    $rootScope.DesignCount = 0;
+
+    $rootScope.TotalCount = 0;
+    $rootScope.Accreditation = 0;
+    $rootScope.vcount = 0;;
+
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black; ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ')  <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+
+    
+}
+
+else {
+
+    var aap2 = localStorageService.get("baskets");
+    $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+    $rootScope.PatentCount = aap2.PatentCount;
+
+    $rootScope.DesignCount = aap2.DesignCount;
+
+    $rootScope.Accreditation = aap2.Accreditation;
+
+    $rootScope.TotalCount = aap2.TotalCount;
+    $rootScope.vcount = aap2.vcount;;
+    $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+}
+
+          });
         app.controller('PaymentStatusController', function ($scope, $http, $rootScope ,localStorageService,  $location,authService,$window,$ionicHistory ) {
   $scope.varray44 = [{ Transaction_Status: 'TransactionId', Transaction_Status2:'TransactionId' }, { Transaction_Status: 'TpNumber', Transaction_Status2: 'TpNumber' }] ;
  
@@ -2354,100 +3488,153 @@ $scope.myImages = ["img/xmas_2.jpg", "img/xmas_3.jpg" , "img/xmas_4.jpg"];
        });
 
 
-     app.controller('ApplicantController', function ($scope, $http, $rootScope, localStorageService, authService, $location,$window,$ionicHistory) {
+     app.controller('ApplicantController', function ($scope, $http, $rootScope, localStorageService, authService, $location,$window,$ionicHistory,$sce, $filter) {
         
-       
-      
-   
-
-
-
-
-
-   $scope.dashboard = function () {
-
-$ionicHistory.goBack();
- }
- 
-$scope.onReset = function(){
-    
- $scope.aa = {
-        applicantname : "",
-        email :"",
-         mobile : "",
-          address : "",
-    };
-
-     localStorageService.set("applicant", "");
-    }
-
-           $scope.submitForm = function (aa) {
-
-             //  if ((aa.applicantname == undefined || aa.applicantname == "") && (aa.address == undefined || aa.address == "") && (aa.email == undefined || aa.email == "") && (aa.mobile == undefined || aa.mobile == "")) {
- if(!(aa.$valid)) {
-                   swal("", "ALL FIELD MUST BE FILLED", "error")
-                   return;
-               }
-               else {
-
-                   var Applicant = new Object();
-                   Applicant.applicantname = aa.applicantname;
-                   Applicant.address = aa.address;
-                   Applicant.email = aa.email;
-                   Applicant.mobile = aa.mobile;
-
-                   localStorageService.set("applicant", Applicant);
-                   //  $window.location.reload(true);
-                    $ionicHistory.clearCache();
-                     $location.path("/app/Fee");
-                     
-
-               }
-
-
-           }
-
-         
-
-           if (localStorageService.get("username") == null) {
+        
+         if (localStorageService.get("username") == null) {
                //  alert("username=" + localStorageService.get("username"))
 
                $rootScope.islogin = false;
 
                $rootScope.islogout = true;
-               $location.path("/")
+               return;
            }
 
            else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
+               var vtokendate2 = new Date(vtokendate);
 
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+                  // $location.path("/app/logout");
+
+                  // return;
+
+               }
+
+               $rootScope.agentRole = localStorageService.get("agentRole");
                $rootScope.islogin = true;
 
                $rootScope.islogout = false;
                $rootScope.username = localStorageService.get("username")
 
-               var dx = localStorageService.get("user");
-
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
 
 
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
 
-                }
 
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
                //  authService2.CheckAccess();
 
            }
+
+         
+           $rootScope.HeaderMessage = "Make Payment";
+        
+           $rootScope.isFee = true;
+       
+          // localStorageService.set("count", '32');
+
+           $rootScope.count22 = '22b';
+          
+         //  var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+           $rootScope.count2 = '32';
+           $scope.ApplicantForm = {};
+
+           if (localStorageService.get("applicant") != null) {
+               var ddx2 = localStorageService.get("applicant");
+              
+
+               $scope.ApplicantForm.firstname = ddx2.firstname;
+               $scope.ApplicantForm.Lastname = ddx2.lastname;
+               $scope.ApplicantForm.Address = ddx2.address;
+               $scope.ApplicantForm.Email = ddx2.email;
+               $scope.ApplicantForm.Phonenumber = ddx2.mobile;
+
+
+
+           }
+
+           else {
+
+               $scope.ApplicantForm = {};
+           }
+
+
+
+           if (localStorageService.get("baskets") == null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.vcount = 0;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+         
+
+
+
+        
+
+
+           $scope.submitForm = function (aa) {
+
+             //  $location.path("/Fee");
+
+
+               if ((aa)) {
+                   
+                   var Applicant = new Object();
+                   Applicant.applicantname = $scope.ApplicantForm.firstname + " " + $scope.ApplicantForm.Lastname;
+                   Applicant.firstname = $scope.ApplicantForm.firstname;
+                   Applicant.lastname = $scope.ApplicantForm.Lastname;
+                   Applicant.address = $scope.ApplicantForm.Address;
+                   Applicant.email = $scope.ApplicantForm.Email;
+                   Applicant.mobile = $scope.ApplicantForm.Phonenumber;
+
+                   localStorageService.set("applicant", Applicant);
+
+
+                   $location.path("/app/Fee");
+               }
+               else {
+
+                   swal("", "ALL FIELD MUST BE FILLED", "error")
+                   return;
+
+               
+
+
+               }
+
+
+           }
+
+       
+    
        });
 
 
@@ -2868,16 +4055,71 @@ catch(err) {
 
            }
        });
-         app.controller('SelectedItemController', function ($scope, $http, $rootScope, localStorageService, authService, $location,
+         app.controller('SelectedItemController', function ($scope, $http, $rootScope, localStorageService, authService, $location,$ionicHistory,$sce, $filter,$ionicModal) 
 
-$ionicHistory) {
+{
            $scope.Shopping_card3 = [];
 
-           $scope.dashboard = function (row) {
-
-$ionicHistory.goBack();
- }
+          
       
+
+           $scope.Shopping_card3 = [];
+
+           $rootScope.HeaderMessage = "Make Payment";
+           $rootScope.isFee = true;
+
+
+
+           if (localStorageService.get("baskets")== null) {
+
+               $rootScope.TrademarkCount = 0;
+
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.Accreditation = 0;
+               $rootScope.vcount = 0;;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.Accreditation = aap2.Accreditation;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+
+
+
+
+
+        //   localStorageService.set("count", '32');
+
+
+           //   localStorageService.set("baskets", $rootScope.htmlPopover);
+         //  var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '00';
+
+           $rootScope.count2 = '32';
+
+         
+
 
            $scope.vTotal = 0;
 
@@ -2885,87 +4127,74 @@ $ionicHistory.goBack();
                $scope.Shopping_card3 = localStorageService.get("Shopping_card2")
 
                $scope.itemsByPage = 100;
-             
+
 
                $scope.displayedCollection2 = [].concat($scope.Shopping_card3);
 
 
                angular.forEach($scope.Shopping_card3, function (item) {
-                  
+
+                   item.amt = item.amt * item.qty;
                    $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
-                 
+
 
                });
 
            }
-           $scope.submitForm = function () {
+           $scope.animationsEnabled = true;
+          
+          var opened = false;
+           $scope.getCheckedTrue = function (kk) {
+            
+               if (kk == "YES") {
+                   // if (opened) return;
+                 $scope.modal.show() ;
+           };
+
+           }
+
+            $ionicModal.fromTemplateUrl('templates/modal2.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+           $scope.submitForm = function (kk) {
+              
                var Shopping_card = []
+
+             
+
+               if (kk == "NO" ||kk == undefined ) {
+
+                   swal("", "Check Terms And Aggrement To Continue", "error");
+
+                   return;
+               }
                Shopping_card = localStorageService.get("Shopping_card2");
                var applicant = localStorageService.get("applicant");
                var agent = localStorageService.get("user");
 
 
-               
 
 
 
-               authService.checkout(applicant, Shopping_card,agent).then(function (data, status) {
+
+               authService.checkout(applicant, Shopping_card, agent).then(function (data, status) {
                    var dd = data;
                    localStorageService.set("twallet", data);
 
-                   $location.path("/app/Minvoice");
-                 
+                 $location.path("/app/Minvoice");
+
 
 
                });
 
-            
-       
+
+
 
 
            }
-
           
-
-           if (localStorageService.get("username") == null) {
-               //  alert("username=" + localStorageService.get("username"))
-
-               $rootScope.islogin = false;
-
-               $rootScope.islogout = true;
-               $location.path("/app")
-           }
-
-           else {
-
-               $rootScope.islogin = true;
-
-               $rootScope.islogout = false;
-               $rootScope.username = localStorageService.get("username")
-
-               var dx = localStorageService.get("user");
-
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
-
-
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
-
-                }
-
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
-               //  authService2.CheckAccess();
-
-           }
 
        
        });
@@ -3107,17 +4336,46 @@ $ionicHistory.goBack();
 
           app.controller('MinvoiceController', function ($scope, $http, $rootScope, localStorageService, authService, $location ,
 
-$ionicHistory) {
-$scope.dashboard = function (row) {
+$ionicHistory,$cordovaInAppBrowser) {
 
-$ionicHistory.goBack();
- }
          
+
+      
            $scope.Shopping_card3 = localStorageService.get("Shopping_card2")
 
            $scope.applicant = localStorageService.get("applicant");
            $scope.agent = localStorageService.get("user");
            $scope.twallet = localStorageService.get("twallet");
+           
+
+
+              $rootScope.user =   localStorageService.get("user");
+             // alert ( $rootScope.user)
+            
+      $rootScope.access_token =   localStorageService.get("access_token");
+      $rootScope.access_tokenexpire =   localStorageService.get("access_tokenexpire");
+      $rootScope.username =   localStorageService.get("username");
+
+                authService.ProceedToPayment($scope.applicant,  $scope.Shopping_card3, $scope.agent,$scope.twallet).then(function (data, status) {
+                    var dd = data;
+                    localStorageService.set("InterSwitchPostFields", data);
+                  $rootScope.InterSwitchPostFields = data;
+var InterSwitchPostFields2 = data;
+
+                        authService.formx($scope.applicant, $scope.Shopping_card3, $scope.agent, $scope.twallet, InterSwitchPostFields2).then(function (data, status) {
+                   var dd = data;
+                   $rootScope.vdata = data;
+                 
+
+
+
+               });
+           
+               
+
+                });
+
+                
 
             $scope.itemsByPage = 100;
             $scope.ListAgent = $scope.Shopping_card3;
@@ -3128,12 +4386,27 @@ $ionicHistory.goBack();
 
             angular.forEach($scope.Shopping_card3, function (item) {
 
-                $scope.vTotal = $scope.vTotal + parseFloat(item.amt);
+                $scope.vTotal = $scope.vTotal + ( parseFloat(item.amt) * parseInt(item.qty));
 
 
             });
 
           
+          $rootScope.$on('$cordovaInAppBrowser:exit', function () {
+
+
+       localStorageService.set("Shopping_card2",null);
+             localStorageService.set("applicant",null);
+      
+              localStorageService.set("twallet",null);
+
+         localStorageService.set("InterSwitchPostFields",null);
+         localStorageService.set("baskets",null) ;
+
+          $location.path("/app");
+
+
+    });
 
             $scope.submitForm = function () {
                 var Shopping_card = []
@@ -3142,20 +4415,54 @@ $ionicHistory.goBack();
                 var agent = localStorageService.get("user");
                 var twallet = localStorageService.get("twallet");
 
+             var  InterSwitchPostFields =localStorageService.get("InterSwitchPostFields");
+
+  authService.PaymentDetail(applicant, Shopping_card, agent, twallet, InterSwitchPostFields).then(function (data, status) {
+                  // var dd = data;
+                  
+
+                  try {
+ //  doUrlPost("http://88.150.164.30/NewTrademark/#/Formx2", "test", "", "", "") 
+
+ var options = {
+      location: 'yes',
+      clearcache: 'no',
+      toolbar: 'yes'
+   };
+
+
+$cordovaInAppBrowser.open("http://88.150.164.30/NewTrademark/Index2.aspx?TransactionidID="+twallet.transID+ "&&xid="+ twallet.xid , '_blank', options)
+		
+      .then(function(event) {
+    
+         $rootScope.test = "test"
+
+      
+         // success
+      })
+		
+      .catch(function(event) {
+         // error
+      });
+
+
+// window.open("http://88.150.164.30/NewTrademark/Index2.aspx?TransactionidID="+twallet.transID+ "&&xid="+ twallet.xid , '_blank');
+  
+}
+catch(err) {
+    alert(err.message)
+    
+}        
+                 //  document.getElementById('form2').submit();
+
+
+               });
 
 
 
 
 
-                authService.ProceedToPayment(applicant, Shopping_card, agent,twallet).then(function (data, status) {
-                    var dd = data;
-                    localStorageService.set("InterSwitchPostFields", data);
-
-                    $location.path("/app/ProceedToPayment");
-
-
-
-                });
+           
 
 
 
@@ -3165,17 +4472,37 @@ $ionicHistory.goBack();
 
 
 
+       });
+   app.controller('FeeController', function ($scope, $http, $rootScope, localStorageService, authService, $location, $sce, $filter, $window) {
+
            if (localStorageService.get("username") == null) {
                //  alert("username=" + localStorageService.get("username"))
 
                $rootScope.islogin = false;
 
                $rootScope.islogout = true;
-               $location.path("/app")
+               return;
+
            }
 
            else {
+               var vtokendate = localStorageService.get("access_tokenexpire")
 
+              
+               var vtokendate2 = new Date(vtokendate);
+
+              
+           var vtokendate2 = vtokendate2.toGMTString();
+               var vtokendate3 = new Date();
+               var tdate = dates.compare(vtokendate2, vtokendate3);
+
+               if (tdate < 0) {
+                 //  $location.path("/app/logout");
+
+                 //  return;
+
+               }
+               $rootScope.agentRole = localStorageService.get("agentRole");
                $rootScope.islogin = true;
 
                $rootScope.islogout = false;
@@ -3186,77 +4513,127 @@ $ionicHistory.goBack();
                $rootScope.vurl = dx.imageurl + dx.Principal;
                $rootScope.vurl2 = dx.imageurl + dx.logo;
 
+               if (localStorageService.get("vcount") != null) {
+                   var ppx = localStorageService.get("vcount")
+                   ppx = parseInt(ppx);
+                   $rootScope.vcount2 = ppx;
+                   if (ppx > 0) {
+                       $rootScope.xvv = true;
 
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
+                   }
 
-                }
-
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
+                   else {
+                       $rootScope.xvv = false;
+                   }
+               }
                //  authService2.CheckAccess();
 
            }
-       });
- app.controller('FeeController', function ($scope, $http, $rootScope, localStorageService, authService, $location,$window,$ionicHistory,$ionicModal) {
+
+           $rootScope.HeaderMessage = "Make Payment";
+           $rootScope.isFee = true;
          
-       $scope.openModal = function (row) {
+           $rootScope.count = '00';
+           $rootScope.count2 = '32';
 
-          $scope.appfee = row.init_amt
-          $scope.apptech_amt = row.tech_amt 
-           $scope.appamt = row.amt
-//$scope.dialogShown = true;
-$scope.modal.show()
-       }
+           if (localStorageService.get("baskets") == null) {
 
-      $ionicModal.fromTemplateUrl('templates/modal.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  
-  $scope.createContact = function(u) {        
-    $scope.contacts.push({ name: u.firstName + ' ' + u.lastName });
-    $scope.modal.hide();
-  };
-       
+               $rootScope.TrademarkCount = 0;
 
-    
+               $rootScope.PatentCount = 0;
+
+               $rootScope.DesignCount = 0;
+
+               $rootScope.TotalCount = 0;
+               $rootScope.Accreditation = 0;
+               $rootScope.vcount = 0;;
+
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+           }
+
+           else {
+
+               var aap2 = localStorageService.get("baskets");
+               $rootScope.TrademarkCount = aap2.TrademarkCount;
+
+               $rootScope.PatentCount = aap2.PatentCount;
+
+               $rootScope.DesignCount = aap2.DesignCount;
+
+               $rootScope.Accreditation = aap2.Accreditation;
+
+               $rootScope.TotalCount = aap2.TotalCount;
+               $rootScope.vcount = aap2.vcount;;
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $filter('currency')($rootScope.TotalCount, '', 2) + '  </div> ');
+
+           }
+
+
+
+
+        
+
+         //  localStorageService.set("count", '32');
+
+
+        //   localStorageService.set("baskets", $rootScope.htmlPopover);
+         //  var aap = localStorageService.get("count");
+
+           // alert(aap)
+           $rootScope.count = '32';
 
          
-           $scope.Shopping_card2 = []
+
+
+         
+           $scope.createContact = function (u) {
+               $scope.contacts.push({ name: u.firstName + ' ' + u.lastName });
+             //  $scope.modal.hide();
+           };
+
+
+
+
+
+          
+
+
+           if (localStorageService.get("Shopping_card2") != null) {
+
+               var cart3 = localStorageService.get("Shopping_card2");
+
+               $scope.Shopping_card2 = cart3;
+           }
+
+           else {
+
+               $scope.Shopping_card2 = [] ;
+           }
+
+
 
            $scope.vcount = 0;
            $scope.submitForm = function () {
+              
                var vno = 0;
-               angular.forEach($scope.Shopping_card2, function (item) {
-                   var User_Status = new Object();
-                   item.amt = parseFloat(item.amt) * parseFloat(item.qty);
-                   item.sn = vno + 1;
-                   vno = vno + 1;
+               //angular.forEach($scope.Shopping_card2, function (item) {
+               //    var User_Status = new Object();
+               //    item.amt = parseFloat(item.amt) * parseFloat(item.qty);
+               //    item.sn = vno + 1;
+               //    vno = vno + 1;
 
-               });
+               //});
                localStorageService.set("Shopping_card2", $scope.Shopping_card2);
-               $location.path("/app/SelectedItem");
+               
+              $location.path("/app/SelectedItem");
+              
 
-    
+
 
 
            }
 
- $scope.dashboard = function (row) {
-
-$ionicHistory.goBack();
- }
-           
-
+       
            $scope.showbtn2 = function (row) {
 
                if (row.showbtn) {
@@ -3269,6 +4646,12 @@ $ionicHistory.goBack();
                    return false;
                }
 
+           }
+
+           $scope.submitForm2 = function () {
+
+              $location.path("/app");
+
 
            }
 
@@ -3276,6 +4659,13 @@ $ionicHistory.goBack();
 
            $scope.EditRow = function (row) {
 
+               if (localStorageService.get("Shopping_card2") != null) {
+
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   $scope.Shopping_card2 = cart3;
+               }
+
                if (isNumber(row.qt_code)) {
 
 
@@ -3292,42 +4682,77 @@ $ionicHistory.goBack();
                    swal("", "Quantity Field Invalid", "error");
                    return;
                }
+               var tot = 0;
+               var abc = $rootScope.TotalCount;
+              
+               $rootScope.TotalCount = parseFloat($rootScope.TotalCount) + (parseFloat(row.amt) * parseInt(row.qt_code));
 
+               //  $rootScope.TotalCount = $filter('currency')($rootScope.TotalCount);
+
+
+              
                angular.forEach($scope.displayedCollection, function (item) {
-            var User_Status = new Object();
-            if (item.item_code == row.item_code && item.sn == row.sn) {
-                item.showbtn = false;
-                item.showbtn2 = true;
+                   var User_Status = new Object();
+                  
+                   if (item.item_code == row.item_code && item.sn == row.sn) {
+                       item.showbtn = false;
+                       item.showbtn2 = true;
 
-                var Shopping_card = new Object();
-                Shopping_card.amt = item.amt;
-                Shopping_card.init_amt = item.init_amt;
-                Shopping_card.item_code = item.item_code;
-                Shopping_card.item_desc = item.xdesc;
-                Shopping_card.qty = item.qt_code;
-                Shopping_card.tech_amt = item.tech_amt;
-                Shopping_card.xid = item.xid;
-                Shopping_card.sn = item.sn;
+                       var Shopping_card = new Object();
+                       Shopping_card.amt = item.amt;
+                       Shopping_card.init_amt = item.init_amt;
+                       Shopping_card.item_code = item.item_code;
+                       Shopping_card.item_desc = item.xdesc;
+                       Shopping_card.qty = item.qt_code;
+                       Shopping_card.tech_amt = item.tech_amt;
+                       Shopping_card.xid = item.xid;
+                       Shopping_card.sn = item.sn;
 
-                $scope.Shopping_card2.push(Shopping_card);
-                $scope.vcount = $scope.Shopping_card2.length;
-               
+                       $scope.Shopping_card2.push(Shopping_card);
+                       tot = tot + parseInt(item.qt_code);
+                       $rootScope.vcount = parseInt($rootScope.vcount) + tot;
+                       $rootScope.TrademarkCount = parseInt($rootScope.TrademarkCount) + tot ;
+                      
+
+                       $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+                      
+                       var vbasket = new Object();
+                       vbasket.TrademarkCount = $rootScope.TrademarkCount;
+                       vbasket.PatentCount = $rootScope.PatentCount;
+                       vbasket.DesignCount = $rootScope.DesignCount;
+                       vbasket.Accreditation = $rootScope.Accreditation;
+                       vbasket.TotalCount = $rootScope.TotalCount;
+                       vbasket.vcount = $rootScope.vcount;
+                       vbasket.vcount = $rootScope.vcount;
+                       
+                       localStorageService.set("baskets", vbasket);
+
+                      
 
 
-            }
+                   }
 
 
 
 
-           
 
 
-        });
+
+               });
+
+               localStorageService.set("Shopping_card2", $scope.Shopping_card2);
 
            }
 
 
- $scope.EditRow3 = function (row) {
+           $scope.EditRow3 = function (row) {
+
+               if (localStorageService.get("Shopping_card2") != null) {
+
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   $scope.Shopping_card2 = cart3;
+               }
 
                if (isNumber(row.qt_code)) {
 
@@ -3345,46 +4770,82 @@ $ionicHistory.goBack();
                    swal("", "Quantity Field Invalid", "error");
                    return;
                }
-
+               var tot = 0;
+               $rootScope.TotalCount = parseFloat($rootScope.TotalCount) + (parseFloat(row.amt) * parseInt(row.qt_code));
                angular.forEach($scope.displayedCollection2, function (item) {
-            var User_Status = new Object();
-            if (item.item_code == row.item_code && item.sn == row.sn) {
-                item.showbtn = false;
-                item.showbtn2 = true;
+                   var User_Status = new Object();
+                   if (item.item_code == row.item_code && item.sn == row.sn) {
+                       item.showbtn = false;
+                       item.showbtn2 = true;
 
-                var Shopping_card = new Object();
-                Shopping_card.amt = item.amt;
-                Shopping_card.init_amt = item.init_amt;
-                Shopping_card.item_code = item.item_code;
-                Shopping_card.item_desc = item.xdesc;
-                Shopping_card.qty = item.qt_code;
-                Shopping_card.tech_amt = item.tech_amt;
-                Shopping_card.xid = item.xid;
-                Shopping_card.sn = item.sn;
+                       var Shopping_card = new Object();
+                       Shopping_card.amt = item.amt;
+                       Shopping_card.init_amt = item.init_amt;
+                       Shopping_card.item_code = item.item_code;
+                       Shopping_card.item_desc = item.xdesc;
+                       Shopping_card.qty = item.qt_code;
+                       Shopping_card.tech_amt = item.tech_amt;
+                       Shopping_card.xid = item.xid;
+                       Shopping_card.sn = item.sn;
 
-                $scope.Shopping_card2.push(Shopping_card);
-                $scope.vcount = $scope.Shopping_card2.length;
-               
+                       $scope.Shopping_card2.push(Shopping_card);
+                       tot = tot + parseInt(item.qt_code);
+         
+                       $rootScope.vcount = parseInt($rootScope.vcount) + tot;
+                       $rootScope.PatentCount = parseInt($rootScope.PatentCount) + tot;
+                       $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+
+                       var vbasket = new Object();
+                       vbasket.TrademarkCount = $rootScope.TrademarkCount;
+                       vbasket.PatentCount = $rootScope.PatentCount;
+                       vbasket.DesignCount = $rootScope.DesignCount;
+                       vbasket.Accreditation = $rootScope.Accreditation;
+                       vbasket.TotalCount = $rootScope.TotalCount;
+                       vbasket.vcount = $rootScope.vcount;
+                       localStorageService.set("baskets", vbasket);
+                        
+
+                   }
 
 
-            }
 
 
 
 
-           
 
+               });
 
-        });
+               localStorageService.set("Shopping_card2", $scope.Shopping_card2);
 
- }
+           }
 
 
 
            $scope.EditRow4 = function (row) {
 
-             
+               if (localStorageService.get("Shopping_card2") != null) {
 
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   $scope.Shopping_card2 = cart3;
+               }
+
+
+               var tot = 0;
+               $rootScope.vcount = parseInt($rootScope.vcount) - parseInt(row.qt_code);
+               $rootScope.PatentCount = parseInt($rootScope.PatentCount) - parseInt(row.qt_code);
+               $rootScope.TotalCount = parseFloat($rootScope.TotalCount) - (parseFloat(row.amt) * parseInt(row.qt_code));
+              
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+             
+               var vbasket = new Object();
+               vbasket.TrademarkCount = $rootScope.TrademarkCount;
+               vbasket.PatentCount = $rootScope.PatentCount;
+               vbasket.DesignCount = $rootScope.DesignCount;
+               vbasket.Accreditation = $rootScope.Accreditation;
+               vbasket.TotalCount = $rootScope.TotalCount;
+               vbasket.vcount = $rootScope.vcount;
+               localStorageService.set("baskets", vbasket);
                angular.forEach($scope.displayedCollection2, function (item) {
                    var User_Status = new Object();
                    if (item.item_code == row.item_code && item.sn == row.sn) {
@@ -3405,8 +4866,8 @@ $ionicHistory.goBack();
 
                        var index = $scope.Shopping_card2.indexOf(Shopping_card);
                        $scope.Shopping_card2.splice(index, 1);
-                       $scope.vcount = $scope.Shopping_card2.length;
-                      // alert($scope.Shopping_card2.length)
+                      
+                       // alert($scope.Shopping_card2.length)
 
                    }
 
@@ -3429,10 +4890,19 @@ $ionicHistory.goBack();
 
                });
 
+               localStorageService.set("Shopping_card2", $scope.Shopping_card2);
+
            }
 
 
- $scope.EditRow5 = function (row) {
+           $scope.EditRow5 = function (row) {
+
+               if (localStorageService.get("Shopping_card2") != null) {
+
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   $scope.Shopping_card2 = cart3;
+               }
 
                if (isNumber(row.qt_code)) {
 
@@ -3450,46 +4920,78 @@ $ionicHistory.goBack();
                    swal("", "Quantity Field Invalid", "error");
                    return;
                }
-
+               var tot = 0;
+               $rootScope.TotalCount = parseFloat($rootScope.TotalCount) + (parseFloat(row.amt) * parseInt(row.qt_code));
                angular.forEach($scope.displayedCollection3, function (item) {
-            var User_Status = new Object();
-            if (item.item_code == row.item_code && item.sn == row.sn) {
-                item.showbtn = false;
-                item.showbtn2 = true;
+                   var User_Status = new Object();
+                   if (item.item_code == row.item_code && item.sn == row.sn) {
+                       item.showbtn = false;
+                       item.showbtn2 = true;
 
-                var Shopping_card = new Object();
-                Shopping_card.amt = item.amt;
-                Shopping_card.init_amt = item.init_amt;
-                Shopping_card.item_code = item.item_code;
-                Shopping_card.item_desc = item.xdesc;
-                Shopping_card.qty = item.qt_code;
-                Shopping_card.tech_amt = item.tech_amt;
-                Shopping_card.xid = item.xid;
-                Shopping_card.sn = item.sn;
+                       var Shopping_card = new Object();
+                       Shopping_card.amt = item.amt;
+                       Shopping_card.init_amt = item.init_amt;
+                       Shopping_card.item_code = item.item_code;
+                       Shopping_card.item_desc = item.xdesc;
+                       Shopping_card.qty = item.qt_code;
+                       Shopping_card.tech_amt = item.tech_amt;
+                       Shopping_card.xid = item.xid;
+                       Shopping_card.sn = item.sn;
 
-                $scope.Shopping_card2.push(Shopping_card);
-                $scope.vcount = $scope.Shopping_card2.length;
-               
+                       $scope.Shopping_card2.push(Shopping_card);
+                       tot = tot + parseInt(item.qt_code);
+                       $rootScope.vcount = parseInt($rootScope.vcount) + tot;
+                       $rootScope.DesignCount = parseInt($rootScope.DesignCount) + tot;
+                      
+                       $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+                       localStorageService.set("baskets", $rootScope.htmlPopover);
+                       var vbasket = new Object();
+                       vbasket.TrademarkCount = $rootScope.TrademarkCount;
+                       vbasket.PatentCount = $rootScope.PatentCount;
+                       vbasket.DesignCount = $rootScope.DesignCount;
+                       vbasket.Accreditation = $rootScope.Accreditation;
+                       vbasket.TotalCount = $rootScope.TotalCount;
+                       vbasket.vcount = $rootScope.vcount;
+                       localStorageService.set("baskets", vbasket);
+                   }
 
 
-            }
 
 
 
 
-           
 
+               });
 
-        });
+               localStorageService.set("Shopping_card2", $scope.Shopping_card2);
 
- }
+           }
 
 
 
            $scope.EditRow6 = function (row) {
 
-             
+               if (localStorageService.get("Shopping_card2") != null) {
 
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   $scope.Shopping_card2 = cart3;
+               }
+
+               var tot = 0;
+               $rootScope.vcount = parseInt($rootScope.vcount) - parseInt(row.qt_code);
+               $rootScope.DesignCount = parseInt($rootScope.DesignCount) - parseInt(row.qt_code);
+               $rootScope.TotalCount = parseFloat($rootScope.TotalCount) - (parseFloat(row.amt) * parseInt(row.qt_code));
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black ">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');
+              
+               var vbasket = new Object();
+               vbasket.TrademarkCount = $rootScope.TrademarkCount;
+               vbasket.PatentCount = $rootScope.PatentCount;
+               vbasket.DesignCount = $rootScope.DesignCount;
+               vbasket.Accreditation = $rootScope.Accreditation;
+               vbasket.TotalCount = $rootScope.TotalCount;
+               vbasket.vcount = $rootScope.vcount;
+               localStorageService.set("baskets", vbasket);
                angular.forEach($scope.displayedCollection3, function (item) {
                    var User_Status = new Object();
                    if (item.item_code == row.item_code && item.sn == row.sn) {
@@ -3510,8 +5012,8 @@ $ionicHistory.goBack();
 
                        var index = $scope.Shopping_card2.indexOf(Shopping_card);
                        $scope.Shopping_card2.splice(index, 1);
-                       $scope.vcount = $scope.Shopping_card2.length;
-                      // alert($scope.Shopping_card2.length)
+                      
+                       // alert($scope.Shopping_card2.length)
 
                    }
 
@@ -3533,6 +5035,8 @@ $ionicHistory.goBack();
 
 
                });
+
+               localStorageService.set("Shopping_card2", $scope.Shopping_card2);
 
            }
 
@@ -3555,8 +5059,27 @@ $ionicHistory.goBack();
 
            $scope.EditRow2 = function (row) {
 
-             
+               if (localStorageService.get("Shopping_card2") != null) {
 
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   $scope.Shopping_card2 = cart3;
+               }
+
+               var tot = 0;
+               $rootScope.vcount = parseInt($rootScope.vcount) - parseInt(row.qt_code);
+               $rootScope.TotalCount = parseFloat($rootScope.TotalCount) - (parseFloat(row.amt) * parseInt(row.qt_code));
+               $rootScope.TrademarkCount = parseInt($rootScope.TrademarkCount) - parseInt(row.qt_code);
+               $rootScope.htmlPopover = $sce.trustAsHtml('<div style="color: black">Trademark (' + $rootScope.TrademarkCount + ') <br/>  Patent (' + $rootScope.PatentCount + ') <br/> Design (' + $rootScope.DesignCount + ') <br/>  Accreditation (' + $rootScope.Accreditation + ') <br/> <hr class="hr3" /> <br/> Total &nbsp; ' + $rootScope.TotalCount + '  </div> ');;
+             
+               var vbasket = new Object();
+               vbasket.TrademarkCount = $rootScope.TrademarkCount;
+               vbasket.PatentCount = $rootScope.PatentCount;
+               vbasket.DesignCount = $rootScope.DesignCount;
+               vbasket.Accreditation = $rootScope.Accreditation;
+               vbasket.TotalCount = $rootScope.TotalCount;
+               vbasket.vcount = $rootScope.vcount;
+               localStorageService.set("baskets", vbasket);
                angular.forEach($scope.displayedCollection, function (item) {
                    var User_Status = new Object();
                    if (item.item_code == row.item_code && item.sn == row.sn) {
@@ -3577,8 +5100,10 @@ $ionicHistory.goBack();
 
                        var index = $scope.Shopping_card2.indexOf(Shopping_card);
                        $scope.Shopping_card2.splice(index, 1);
-                       $scope.vcount = $scope.Shopping_card2.length;
-                      // alert($scope.Shopping_card2.length)
+                       //  tot = tot + parseInt(item.qt_code);
+
+                     //  $rootScope.vcount = parseInt($rootScope.vcount) - parseInt(row.qt_code);
+                       // alert($scope.Shopping_card2.length)
 
                    }
 
@@ -3601,6 +5126,11 @@ $ionicHistory.goBack();
 
                });
 
+               localStorageService.set("Shopping_card2", $scope.Shopping_card2);
+
+              
+         
+
            }
 
            $scope.showbtn3 = function (row) {
@@ -3619,37 +5149,157 @@ $ionicHistory.goBack();
            }
 
 
+           $scope.EditTrademark = function (row) {
+               angular.forEach($scope.displayedCollection, function (item) {
+                   var User_Status = new Object();
+
+                   if (item.item_code == row.item_code && item.sn == row.sn) {
+                       item.showbtn = false;
+                       item.showbtn2 = true;
+
+                       item.qt_code = row.qty
+
+
+                   }
+
+
+               });
+
+
+           }
+
+
+           $scope.EditPatent = function (row) {
+               angular.forEach($scope.displayedCollection2, function (item) {
+                   var User_Status = new Object();
+
+                   if (item.item_code == row.item_code && item.sn == row.sn) {
+                       item.showbtn = false;
+                       item.showbtn2 = true;
+
+                       item.qt_code = row.qty
+
+
+                   }
+
+
+               });
+
+
+           }
+
+
+           $scope.EditDesign = function (row) {
+               angular.forEach($scope.displayedCollection3, function (item) {
+                   var User_Status = new Object();
+
+                   if (item.item_code == row.item_code && item.sn == row.sn) {
+                       item.showbtn = false;
+                       item.showbtn2 = true;
+
+                       item.qt_code = row.qty
+
+
+                   }
+
+
+               });
+
+
+           }
+
            authService.GetFee().then(function (data, status) {
                var dd = data;
 
                $scope.itemsByPage = 6;
                $scope.ListAgent = dd;
-             
+
                $scope.displayedCollection = [].concat($scope.ListAgent);
- 
-             
+
+
+               if (localStorageService.get("Shopping_card2") != null) {
+
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                 //  $scope.Shopping_card2 = cart3;
+
+
+                   angular.forEach(cart3, function (item) {
+                  
+                       $scope.EditTrademark(item);
+
+
+
+
+
+
+                   });
+               }
+
+
            });
 
-             authService.GetFee2().then(function (data, status) {
+           authService.GetFee2().then(function (data, status) {
                var dd = data;
 
                $scope.itemsByPage = 6;
                $scope.ListAgent2 = dd;
-             
+
                $scope.displayedCollection2 = [].concat($scope.ListAgent2);
- 
-             
+
+
+
+               if (localStorageService.get("Shopping_card2") != null) {
+
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   //  $scope.Shopping_card2 = cart3;
+
+
+                   angular.forEach(cart3, function (item) {
+
+                       $scope.EditPatent(item);
+
+
+
+
+
+
+                   });
+               }
+
+
            });
 
-            authService.GetFee3().then(function (data, status) {
+           authService.GetFee3().then(function (data, status) {
                var dd = data;
 
                $scope.itemsByPage = 6;
                $scope.ListAgent3 = dd;
-             
+
                $scope.displayedCollection3 = [].concat($scope.ListAgent3);
- 
-             
+
+
+               if (localStorageService.get("Shopping_card2") != null) {
+
+                   var cart3 = localStorageService.get("Shopping_card2");
+
+                   //  $scope.Shopping_card2 = cart3;
+
+
+                   angular.forEach(cart3, function (item) {
+
+                       $scope.EditDesign(item);
+
+
+
+
+
+
+                   });
+               }
+
+
            });
 
 
@@ -3674,78 +5324,44 @@ $ionicHistory.goBack();
 
 
 
-           if (localStorageService.get("username") == null) {
-               //  alert("username=" + localStorageService.get("username"))
-
-               $rootScope.islogin = false;
-
-               $rootScope.islogout = true;
-               $location.path("/app")
- 
-           }
-
-           else {
-
-               $rootScope.islogin = true;
-
-               $rootScope.islogout = false;
-               $rootScope.username = localStorageService.get("username")
-
-               var dx = localStorageService.get("user");
-
-               $rootScope.vurl = dx.imageurl + dx.Principal;
-               $rootScope.vurl2 = dx.imageurl + dx.logo;
-
-                if (localStorageService.get("vcount") != null) {
-                    var ppx = localStorageService.get("vcount")
-                    ppx = parseInt(ppx) ;
-   $rootScope.vcount2 = ppx;
-   if (ppx > 0) 
-   {
-                    $rootScope.xvv = true;
-
-                }
-
-                else {
-                     $rootScope.xvv = false;
-                }
-                }
-               //  authService2.CheckAccess();
-
-           }
+       
        });
        
 
        app.controller('logoutController', function ($scope, $http, $rootScope ,localStorageService,$location,$window ) {
 
-       localStorageService.set("username", null);
-           localStorageService.set("user", null);
-           localStorageService.set("vurl", null);
-           localStorageService.set("vurl2", null);
 
-           localStorageService.set("ViewBasketDetails", null);
 
-           localStorageService.set("vcount",null) ;
-
-           localStorageService.set("applicant", null);
-
-           localStorageService.set("Shopping_card2",null);
-            localStorageService.set("InterSwitchPostFields",null);
-
-localStorageService.set("twallet",null);
-
+           localStorageService.set("username", null);
+           localStorageService.set("access2", null);
+           localStorageService.set("Shopping_card2", null);
+           localStorageService.set("applicant", null)
+           localStorageService.set("agentRole", null)
            $rootScope.islogin = false;
 
            $rootScope.islogout = true;
            localStorageService.set("access_token", null);
            localStorageService.set("access_right", null);
+           localStorageService.set("baskets", null);
 
            localStorageService.set("loginuser", null);
+
+           localStorageService.set("Email", null);
+
+
+           localStorageService.set("user", null);
+
+
+          
+           localStorageService.set("vurl", null);
+           localStorageService.set("vurl2", null);
+         //  authService2.checkaccess2();
           
 
+        
 
            $location.path("/app")
-            $window.location.reload(true)
+        
 
 
 
@@ -3756,28 +5372,10 @@ localStorageService.set("twallet",null);
 
 
 
-          app.controller('ContactController', function ($scope, $http, $rootScope, localStorageService, authService, $location) {
+          app.controller('ContactController', function ($scope, $http, $rootScope, localStorageService, authService, $location,$state) {
           
         
-           //  $state.transitionTo("home")
- 
-           var kq = localStorageService.get("access_right");
-           //for (var key in kq) {
-
-           //    if (kq[key] == "ADMIN") {
-
-           //        $rootScope.isAdmin = true;
-           //    }
-
-
-           //    if (kq[key] == "PARTNER") {
-
-           //        $rootScope.isInstitution = true;
-           //    }
-
-
-           //    // alert($rootScope.Roles[key])
-           //}
+           
 
 
            if (localStorageService.get("username") == null) {
@@ -3836,61 +5434,21 @@ localStorageService.set("twallet",null);
                        
                            $scope.savedSuccessfully = true;
                            $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
+  var dsap = data.Sys_ID;
+                           authService.getAgentemail(dsap).then(function (data, status) {
+                            var dd = data;
+                            localStorageService.set("Email", data);
+                            $state.go('app.Home') ;
 
-                           localStorageService.set("loginuser", data.Email);
+                            $rootScope.$emit('refr');
+                           //  home('app.Home', null, { 'reload': true });
+                         // $location.path("/app");
 
-                           localStorageService.set("user", data);
-                          
-
-                           $rootScope.vurl = data.imageurl + data.Principal;
-                           $rootScope.vurl2 = data.imageurl + data.logo;
-                           localStorageService.set("vurl", $rootScope.vurl);
-                           localStorageService.set("vurl2", $rootScope.vurl2);
-
-                           var ddata3 = data.Email;
-
-                     var dsap =data.Sys_ID;    
+                        });
 
 
-                 authService.getAgentRoles(data.Sys_ID).then(function (data, status) {
 
-
-if (data == 0) {
-$rootScope.agent = false;
-
-}
-
-else {
-
-    $rootScope.agent = true;
-}
-var ddpp =$rootScope.agent;
- localStorageService.set("agent", ddpp);
-
-
-   authService.getEmailCount(dsap).then(function (data, status) {
-                   var dd = data;
-                   localStorageService.set("vcount", data);
-                   $location.path("/app");
-                  // swal("","Update SuccessFul","success") 
-               });
-
- 
-
-               });
-
-                         
-                           //$location.path("/profile");
-                          
-
-                           //if (data.status == "200") {
-                           //    swal("Record Saved Successfully");
-
-                           //}
-
-
-                           //   $location.path("/")
-                           //  startTimer();
+           
 
                        },
                    function (response) {
@@ -3907,7 +5465,7 @@ var ddpp =$rootScope.agent;
 
          
 
-
+$location.path("/")
 
 
 
@@ -3999,6 +5557,59 @@ var ddpp =$rootScope.agent;
 
 
        );
+
+       
+       var dates = {
+           convert: function (d) {
+               // Converts the date in d to a date-object. The input can be:
+               //   a date object: returned without modification
+               //  an array      : Interpreted as [year,month,day]. NOTE: month is 0-11.
+               //   a number     : Interpreted as number of milliseconds
+               //                  since 1 Jan 1970 (a timestamp) 
+               //   a string     : Any format supported by the javascript engine, like
+               //                  "YYYY/MM/DD", "MM/DD/YYYY", "Jan 31 2009" etc.
+               //  an object     : Interpreted as an object with year, month and date
+               //                  attributes.  **NOTE** month is 0-11.
+               return (
+                   d.constructor === Date ? d :
+                   d.constructor === Array ? new Date(d[0], d[1], d[2]) :
+                   d.constructor === Number ? new Date(d) :
+                   d.constructor === String ? new Date(d) :
+                   typeof d === "object" ? new Date(d.year, d.month, d.date) :
+                   NaN
+               );
+           },
+           compare: function (a, b) {
+               // Compare two dates (could be of any type supported by the convert
+               // function above) and returns:
+               //  -1 : if a < b
+               //   0 : if a = b
+               //   1 : if a > b
+               // NaN : if a or b is an illegal date
+               // NOTE: The code inside isFinite does an assignment (=).
+               return (
+                   isFinite(a = this.convert(a).valueOf()) &&
+                   isFinite(b = this.convert(b).valueOf()) ?
+                   (a > b) - (a < b) :
+                   NaN
+               );
+           },
+           inRange: function (d, start, end) {
+               // Checks if date in d is between dates in start and end.
+               // Returns a boolean or NaN:
+               //    true  : if d is between start and end (inclusive)
+               //    false : if d is before start or after end
+               //    NaN   : if one or more of the dates is illegal.
+               // NOTE: The code inside isFinite does an assignment (=).
+               return (
+                    isFinite(d = this.convert(d).valueOf()) &&
+                    isFinite(start = this.convert(start).valueOf()) &&
+                    isFinite(end = this.convert(end).valueOf()) ?
+                    start <= d && d <= end :
+                    NaN
+                );
+           }
+       }
 
         function isNumber(n) {
          return !isNaN(parseFloat(n)) && isFinite(n);

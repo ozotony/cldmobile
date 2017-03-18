@@ -36,33 +36,58 @@ app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', 
 
         $http.post(serviceBase + 'api/account/GetLoginToken2', AgentsData, { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
 
-            //  alert(response.access_token);
-            //  localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+           
+               if (response == null) {
 
-            //  alert(response.access_token);
-
-            if (response.Email == null || response.Email == undefined) {
-
-                swal("", "Invalid Username/Password", "error")
-
+                swal("", "Invalid Username / Password", "error")
                 return;
             }
-          //  $rootScope.token = response.access_token;
-           // localStorageService.set("access_token", response.access_token);
-            $rootScope.username = response.Email;
            
+            var kp = response.Token;
+            if (kp.error_description != undefined) {
+                swal("", kp.error_description, "error")
+                return;
+                
+            }
+            
+
+          
+            //  $rootScope.token = response.access_token;
+            // localStorageService.set("access_token", response.access_token);
+            $rootScope.username = response.Email;
+
+             var dsap = response.Sys_ID;
+
+localStorageService.set("user", response);
+            localStorageService.set("access_token", kp.access_token);
+
+
+           
+
+            localStorageService.set("access_tokenexpire", kp.expires);
+
             localStorageService.set("username", response.Email);
 
             $rootScope.login = true;
 
-         
+
+ 
+
 
             $rootScope.username = response.Email;
 
             $rootScope.islogin = true;
 
             $rootScope.islogout = false;
+            $rootScope.login = true;
 
+
+
+            $rootScope.username = response.Email;
+
+            $rootScope.islogin = true;
+
+            $rootScope.islogout = false;
 
          
 
@@ -83,15 +108,32 @@ app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', 
 
     };
 
+ var _getAgentemail = function (registration) {
+        var dd = "";
+        var data = {
+            property1: registration
+        };
+        return $http.get(serviceBase + 'api/account/getEmails', { params: data }, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+        .success(function (response) {
+            return response;
+        })
+        .error(function (response) {
+            return response
+        });
 
 
+        //return $http.post(serviceBase + 'api/account/register', registration).then(function (response) {
+        //    return response;
+        //});
+
+    };
 
  var _GetFee = function () {
         // var serviceBase2 = "http://localhost:24322/";
         var deferred = $q.defer();
 
 
-        $http.get(serviceBase + 'api/account/GetFee', { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+        $http.get(serviceBase + 'api/account/GetFee', { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
 
             //  alert("tony response ="+response);
             //  localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
@@ -288,6 +330,32 @@ app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', 
         return deferred.promise;
 
     };
+
+     var _getPaymentReport = function (dd, dd2) {
+        // var serviceBase2 = "http://localhost:24322/";
+        var deferred = $q.defer();
+
+        var data = {
+            property1: dd,
+            property2: dd2
+        };
+
+
+        $http.get(serviceBase + 'api/account/getPaymentReport', { params: data }, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+
+
+
+            deferred.resolve(response);
+
+        }).error(function (err, status) {
+
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+
+    };
+
 
       var _getTrademarkStatus2 = function (dd) {
         // var serviceBase2 = "http://localhost:24322/";
@@ -781,7 +849,7 @@ var _getDesignStatus = function (dd) {
 
 
 
-        $http.post(serviceBase + 'api/account/ProceedToPayment', AgentsData, { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
+        $http.post(serviceBase + 'api/account/ProceedToPayment2', AgentsData, { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
 
             //  alert(response.access_token);
             //  localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
@@ -803,6 +871,31 @@ var _getDesignStatus = function (dd) {
 
 
 
+
+        return deferred.promise;
+
+    };
+
+      var _getPaymentReport2 = function (dd, dd2) {
+        // var serviceBase2 = "http://localhost:24322/";
+        var deferred = $q.defer();
+
+        var data = {
+            property1: dd,
+            property2: dd2
+        };
+
+
+        $http.get(serviceBase + 'api/account/getPaymentReport2', { params: data }, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+
+
+
+            deferred.resolve(response);
+
+        }).error(function (err, status) {
+
+            deferred.reject(err);
+        });
 
         return deferred.promise;
 
@@ -824,9 +917,9 @@ var _getDesignStatus = function (dd) {
 
         };
 
+//
 
-
-        $http.post(serviceBase + 'api/account/formx', AgentsData, { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
+        $http.post(serviceBase + 'api/account/formx2', AgentsData, { headers: { 'Content-Type': 'application/json' } }).success(function (response) {
 
             //  alert(response.access_token);
             //  localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
@@ -852,6 +945,10 @@ var _getDesignStatus = function (dd) {
         return deferred.promise;
 
     };
+
+
+
+   
 
      var _PostPayment = function () {
 
@@ -908,6 +1005,8 @@ authServiceFactory.getTrademarkStatus2 = _getTrademarkStatus2;
      authServiceFactory.GetCountry =  _GetCountry
 
     authServiceFactory.GetClass =  _GetClass
+
+      authServiceFactory.getAgentemail = _getAgentemail;
    
   authServiceFactory.getState =  _getState
 
@@ -916,6 +1015,10 @@ authServiceFactory.getTrademarkStatus2 = _getTrademarkStatus2;
  authServiceFactory.getPwalletCount = _getPwalletCount
 
  authServiceFactory.getAknowlegment =_getAknowlegment
+
+  authServiceFactory.getPaymentReport = _getPaymentReport
+
+    authServiceFactory.getPaymentReport2 = _getPaymentReport2
 
     return authServiceFactory;
 }]);

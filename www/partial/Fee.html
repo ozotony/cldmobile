@@ -1,412 +1,403 @@
 ﻿<ion-view >
 
     
- <modal-dialog show='dialogShown' dialog-title='DETAIL' style="width:100%">
-
-<table style="width:100%;" class="center-align padding" >
-    <tr>
-<td>
-APPLICATION FEE(NGN)
-</td>
-
-<td>
-{{appfee|currency:""}}
-</td>
-    </tr>
-
-    <tr>
-<td>
-TECH FEE(NGN)
-</td>
-
-<td>
-{{apptech_amt|currency:""}}
-</td>
-    </tr>
-
-     <tr>
-<td>
-AMOUNT(NGN)
-</td>
-
-<td>
-{{appamt|currency:""}}
-</td>
-    </tr>
-
-</table>
-
- </modal-dialog>
+ 
 
  
-<ion-header class="bar bar-assertive bar-subheader">
-        <button class="button button-small " ng-click="dashboard()" >
-       <i class="ion-arrow-left-a"></i>
-          Back
-        </button>
-        <span style="margin-left: auto;
-    margin-right: auto;"> 
-    <strong>TOTAL ITEM IN CART <span class="badge badge-assertive icon-badge">{{vcount}}</span>  </strong> </span> </ion-header>
 
   
   
-  <ion-content class="has-subheader padding" > 
+  <ion-content class="padding has-header"  > 
       
     
 
 
 
 
-      <tabs>
-    <pane title="TRADEMARK">
+     <style>
+    /* Specify styling for tooltip contents */
+    .tooltip-inner {
+        background-color: #00acd6;
+        color: #fff;
+    }
 
-        <div class="table-responsive "> 
- 
-  <ion-scroll zooming="true" direction="y" delegate-handle="main-list" >
-      
-    
-         
-      
-      <div id="no-more-tables">
-      <table  st-table="displayedCollection" st-safe-src="ListAgent"   class="col-md-12  table   cf"  >
-                        <thead class="cf">
-                            <tr bgcolor="#E3EAEB" >
-                                
-                                <th>CODE</th>
-                                 <th>DESCRIPTION</th>
-                                <th>AMOUNT(NGN)</th>
-                                <th>QUANTITY</th>
+    .tooltip-inner {
+        max-width: 350px;
+        /* If max-width does not work, try using width instead */
+        width: 350px;
+    }
+     button .glyphicon {color:black !important;}
+     #btn-signup2 .glyphicon {color:white !important;}
+      .glyphicon2 {color:white !important;}
+    .news {
+        background-image: url("images/LatestNews1.png");
+        height: 100px;
+        background-repeat: no-repeat;
+    }
 
+    hr {
+        border-top: 7px solid #05BC88;
+        margin-bottom: 0px;
+    }
 
-                                <th  ></th>
+    .hr2 {
+        border-top: 7px solid #3D3D3D;
+        margin-top: 1px;
+    }
 
-                              
-                             
+        .btn-success {
+    color: black;
+    background-color: #06FBB5;
+    border-color: #06FBB5;
+     border:none !important;
 
-                            </tr>
+        box-shadow:none !important;
+}
+     .btn-success:active {
+    color: black;
+    background-color: #06FBB5;
+    border-color: #06FBB5;
+     border:none !important;
 
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="row in displayedCollection"  >
-                                <td data-title="CODE">{{row.item_code}}</td>
- <td data-title="DESCRIPTION">{{row.xdesc}}</td>
+        box-shadow:none !important;
+}
 
+         .btn-success:hover {
 
-                               
-                               
-                                
-                                <td  data-title="AMOUNT(NGN)"   >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
-                                <td  data-title="QUANTITY"   ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
-
-
-
-
- <td> 
-     <table class="col-md-12  table  cf">
-         <tr ng-show="showbtn2(row)">
-             <td>
- <input id="Button1" type="button" class="btn btn-success" ng-show="showbtn2(row)" ng-click="EditRow(row)" value="Add" />
-             </td>
-         </tr>
-       <tr ng-show="showbtn3(row)">
-             <td>
- <input id="Button2" type="button" class="btn btn-danger" ng-show="showbtn3(row)" ng-click="EditRow2(row)" value="Remove" /> 
-             </td>
-         </tr>
-
-     </table>
-     
-       </td>
-
-                              
-
-
+        background-color:#7F7F7F;
+        border-color:#7F7F7F;
+        text-shadow:none !important;
 
        
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr >
-                                <td colspan="4" class="text-center col">
-                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="4"></div>
+    }
+
+      .btn-success2 {
+    color: black;
+    background-color: red;
+    border-color: #06FBB5;
+     border:none !important;
+
+        box-shadow:none !important;
+}
+     .btn-success2:active {
+    color: black;
+    background-color: red;
+    border-color: #06FBB5;
+     border:none !important;
+
+        box-shadow:none !important;
+}
+
+     .btn-space {
+    margin-right: 5px;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+   color:black;
+}
+
+.btn-lg, .btn-group-lg>.btn {
+    margin-left: 2px;
+   
+}
+
+</style>
+
+<style>
+    .form-control {
+        background-color: #939393;
+        color: white;
+    }
 
 
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
 
-</div>
+    .panel-info > .panel-heading {
+        background-color: white;
+    }
+
+    .panel-title {
+        color: #3D3D3D;
+        font-weight: bold;
+        padding-left: 70px;
+    }
+
+
+
+    #fgpassword {
+        color: #CCCCCC;
+        font-weight: bold;
+    }
+
+    #loginbox2 {
+        background-image: url('images/bbimage.png');
+        background-repeat: repeat-x;
+    }
+
+
+    .input-group-addon {
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        color: white;
+        text-align: center;
+        background-color: #939393;
+    }
+
+    .side-menu .navbar-nav li {
+        border-bottom: 0px solid #939393;
+        padding-left: 10px;
+        overflow: visible;
+    }
+
+    .side-menu #dropdown > a {
+        border-bottom: 0px solid #939393;
+        overflow: visible;
+    }
+
+
+    .side-menu #dropdown .panel-body .navbar-nav li {
+        border-bottom: 0px solid #939393;
+        overflow: visible;
+    }
+
+    .side-menu .navbar-nav {
+        font-family: Helvetica;
+        font-size: 10px;
+    }
+
 
     
 
 
-                    <table >
-
-
-                        <tr>
-                            <td align="center">
-
-                                <input id="Button1" type="button" class="btn btn-info" ng-click="dashboard()" value="Back" />
-
-                                <input id="Button1" type="button" class="btn btn-info" ng-click="submitForm()" value="Confirm Selected Items" />
-
-
-
-
-                            </td>
-                        </tr>
-                    </table>
-
-
-</ion-scroll>
-
-
-</div>
-
-
-</pane>
-    <pane title="PATENT">
-             <div class="table-responsive"> 
- 
-  <ion-scroll zooming="true" direction="y" delegate-handle="main-list" >
-      <div id="no-more-tables">
-      <table st-table="displayedCollection2" st-safe-src="ListAgent2" class="col-md-12  table   cf" >
-                        <thead class="cf">
-                            <tr bgcolor="#E3EAEB" >
-                                <th st-sort="reg_dt"  >CODE</th>
-                                <th st-sort="reg_dt"  >DESC</th>
-                               
-                                <th st-sort="product_title"  >AMOUNT(NGN)</th>
-                                <th st-sort="product_title"  >QUANTITY</th>
-
-
-                                <th  ></th>
-                             
-
-                            <tr>
-                                <th colspan="4"><input st-search="" class="form-control" placeholder="global search ..." type="text" /></th>
-                            </tr>
-
-                            </tr>
-
-                        <tbody>
-                            <tr ng-repeat="row in displayedCollection2" >
-
-                      
-                           <td data-title="CODE">{{row.item_code}}</td>
-                               
-                             <td data-title="DESCRIPTION">{{row.xdesc}}</td>
-
-
-                               
-                               
-                                
-                                <td  data-title="AMOUNT(NGN)"   >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
-                                <td  data-title="QUANTITY"   ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
-
-
-
-
- <td> 
-   <table>
-         <tr ng-show="showbtn2(row)">
-             <td>
- <input id="Button1" type="button" class="btn btn-success" ng-show="showbtn2(row)" ng-click="EditRow3(row)" value="Add" />
-             </td>
-         </tr>
-       <tr ng-show="showbtn3(row)">
-             <td>
- <input id="Button2" type="button" class="btn btn-danger" ng-show="showbtn3(row)" ng-click="EditRow4(row)" value="Remove" /> 
-             </td>
-         </tr>
-
-     </table>
-     
-     
-       </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr >
-                                <td colspan="7" class="text-center col">
-                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-
-
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-</div>
-                    <table >
-
-
-                        <tr>
-                            <td align="center">
-
-                                <input id="Button1" type="button" class="btn btn-info" ng-click="dashboard()" value="Back" />
-
-                                <input id="Button1" type="button" class="btn btn-info" ng-click="submitForm()" value="Confirm Selected Items" />
-
-
-
-
-                            </td>
-                        </tr>
-                    </table>
-
-
-</ion-scroll>
-
-
-</div>
-    </pane>
-    <pane title="DESIGN">
-             <div class="table-responsive"> 
- 
-  <ion-scroll zooming="true" direction="y" delegate-handle="main-list" >
-      <div id="no-more-tables">
-      <table st-table="displayedCollection3" st-safe-src="ListAgent3" class="col-md-12  table   cf" >
-                        <thead class="cf">
-                            <tr bgcolor="#E3EAEB" >
-                                <th st-sort="reg_dt"  >CODE</th>
-                                <th st-sort="reg_dt"  >DESC</th>
-                               
-                                <th st-sort="product_title"  >AMOUNT(NGN)</th>
-                                <th st-sort="product_title"  >QUANTITY</th>
-
-
-                                <th  ></th>
-                             
-
-                            <tr >
-                                <th colspan="4" class="col"><input st-search="" class="form-control" placeholder="global search ..." type="text" /></th>
-                            </tr>
-
-                            </tr>
-
-                        <tbody>
-                            <tr ng-repeat="row in displayedCollection3" >
-
-
-                              <td data-title="CODE">{{row.item_code}}</td>
-                               <td data-title="DESCRIPTION">{{row.xdesc}}</td>
-
-
-                               
-                               
-                                
-                                <td  data-title="AMOUNT(NGN)"   >{{row.amt|currency:""}} <input id="Button1" type="button" class="btn btn-info" ng-click="openModal(row)"   value="View Detail" /></td>
-                                <td  data-title="QUANTITY"   ><input type="text" class="form-control input-sm" placeholder="Enter qty" ng-model="row.qt_code"></td>
-
-
-
-
- <td> 
-     <table class="col-md-12  table  cf">
-         <tr ng-show="showbtn2(row)">
-             <td>
- <input id="Button1" type="button" class="btn btn-success" ng-show="showbtn2(row)" ng-click="EditRow5(row)" value="Add" />
-             </td>
-         </tr>
-       <tr ng-show="showbtn3(row)">
-             <td>
- <input id="Button2" type="button" class="btn btn-danger" ng-show="showbtn3(row)" ng-click="EditRow6(row)" value="Remove" /> 
-             </td>
-         </tr>
-
-     </table>
-     
-       </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr >
-                                <td colspan="7" class="text-center col">
-                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-
-
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-</div>
-                    <table >
-
-
-                        <tr>
-                            <td align="center">
-
-                                <input id="Button1" type="button" class="btn btn-info" ng-click="dashboard()" value="Back" />
-
-                                <input id="Button1" type="button" class="btn btn-info" ng-click="submitForm()" value="Confirm Selected Items" />
-
-
-
-
-                            </td>
-                        </tr>
-                    </table>
-
-
-</ion-scroll>
-
-
-</div>
-    </pane>
-  </tabs>
+    .dd8 {
+        color: white;
+        background-color: #3D3D3D;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+    }
+
+    .vAccordion--default2 v-pane.is-expanded > v-pane-header {
+        background-color: #616161;
+        border-bottom-color: #2196F3;
+        color: white;
+        height: 40px;
+    }
+
+    .vAccordion--default3 v-pane.is-expanded > v-pane-header {
+        padding-top: 20px;
+        background-color: #616161;
+    }
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+
+    color: #C5C5C5;
+    background-color: #616161 ;
+
+    width:90% ;
+
+    margin-left: 10px;
+
+    margin-right: 10px;
     
-              
-  
+}
+
+</style>
+
+<style type="text/css">
+    .pending-delete {
+        /*color:red;
+    background-color: lightgreen;*/
+        /*text-decoration: line-through;*/
+        font-weight: bolder;
+        font-size: 14px;
+    }
+
+    .vAccordion--default2 v-pane-header {
+        border-bottom: 1px solid white;
+        height: 30px;
+    }
+
+
+        .center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+        .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    
+    color: black;
+   
+    background-color: #06FBB5 !important;
+    border-color:none;
+}
+
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+
+
+    color: #C5C5C5;
+    background-color: #616161 ;
+
+    width:90% ;
+
+    margin-left: 2px;
+
+    margin-right: 10px;
+    
+}
+
+.icon3 {
+
+color:white !important;;
+}
+
+.icon4 {
+
+color:green;
+}
+
+#btn-signup {
+        background-color: #06FBB5;
+        cursor: pointer;
+    }
+
+
+.table-responsive {
+   
+    border: none;
+    margin-bottom: 0px;
+}
       
-          </ion-content> 
+</style>
+<div  >
+
+        
+   <br/>
+   <div class="row center ">
+        <div class="col" >
+          
+                <img src="img/Mobile-36.png" width="100%" class="img-responsive"  />
 
 
-               </ion-view >
+            </div>
+            </div>
+       
+
+    <br />
+
+
+    <v-accordion class="vAccordion--default2 table-responsive"   >
+
+        <!-- add expanded attribute to open the section -->
+        <v-pane  class="table-responsive">
+            <v-pane-header  class="dd8">
+
+                <span style="margin-top:10px" change-background3> Trademark </span>     <span ng-click="$row.toggle()" class="pull-right"  ><i class="icon ion-arrow-down-b icon4"></i></span>    
+                
+            </v-pane-header>
+
+            <v-pane-content  style="height:100%" >
+
+    
+
+        <ul>
+      <li  ng-repeat="row in displayedCollection" type="item-text-wrap">
+         
+         <div class="col"> <span style="font-weight:bold"> Item Code </span> &nbsp; {{row.item_code}}</div>
+          <div class="col"><span style="font-weight:bold"> Descprition </span> &nbsp; {{row.xdesc}}</div>
+          <div class="col"><span style="font-weight:bold"> APPLICATION FEE(NGN)  </span> &nbsp; {{row.init_amt|currency:""}}</div>
+          <div class="col"><span style="font-weight:bold"> Tech  Amount  </span> &nbsp; {{row.tech_amt|currency:""}}</div>
+         <div class="col"><span style="font-weight:bold"> Amount  </span> &nbsp;{{row.amt|currency:""}}</div>
+          <div class="col"> <input type="text"  placeholder="Qty" ng-disabled="row.showbtn2" style="display:inline" ng-model="row.qt_code"></div>
+          <div class="col"><button id="btn-signup"  ng-show="showbtn2(row)" ng-click="EditRow(row)" class="btn"  style="font-weight:bold ;font-size:10px ;" type="submit"> <i class="icon ion-plus-circled"></i>  </button>
+                    
+          <button id="btn-signup2" ng-show="showbtn3(row)" ng-click="EditRow2(row)" class="btn" style="font-weight:bold ;font-size:10px ;background-color:#BE1E2D" type="submit"> <i class="icon ion-close-circled icon3"></i> </button>
+          </div>
+           <hr/>
+      </li>
+    </ul>
+       
+               
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane >
+            <v-pane-header  class="dd8">
+                <span style="margin-top:10px" change-background3> Patent </span>     <span ng-click="$row.toggle()" class="pull-right"  ><i class="icon ion-arrow-down-b icon4"></i></span>    
+            </v-pane-header>
+
+            <v-pane-content>
+<ul>
+                <li  ng-repeat="row in displayedCollection2" type="item-text-wrap">
+         
+         <div class="col"> <span style="font-weight:bold"> Item Code </span> &nbsp; {{row.item_code}}</div>
+          <div class="col"><span style="font-weight:bold"> Descprition </span> &nbsp; {{row.xdesc}}</div>
+          <div class="col"><span style="font-weight:bold"> APPLICATION FEE(NGN)  </span> &nbsp; {{row.init_amt|currency:""}}</div>
+          <div class="col"><span style="font-weight:bold"> Tech  Amount  </span> &nbsp; {{row.tech_amt|currency:""}}</div>
+         <div class="col"><span style="font-weight:bold"> Amount  </span> &nbsp;{{row.amt|currency:""}}</div>
+          <div class="col"> <input type="text"  placeholder="Qty" ng-disabled="row.showbtn2" style="display:inline" ng-model="row.qt_code"></div>
+          <div class="col"><button id="btn-signup"  ng-show="showbtn2(row)" ng-click="EditRow3(row)" class="btn"  style="font-weight:bold ;font-size:10px ;" type="submit"> <i class="icon ion-plus-circled"></i>  </button>
+                    
+          <button id="btn-signup2" ng-show="showbtn3(row)" ng-click="EditRow4(row)" class="btn" style="font-weight:bold ;font-size:10px ;background-color:#BE1E2D" type="submit"> <i class="icon ion-close-circled icon3"></i> </button>
+          </div>
+           <hr/>
+      </li>
+
+      </ul>
+            
+            </v-pane-content>
+        </v-pane>
+
+        <v-pane>
+            <v-pane-header class="dd8">
+                <span style="margin-top:10px" change-background3> Design </span>     <span ng-click="$row.toggle()" class="pull-right"  ><i class="icon ion-arrow-down-b icon4"></i></span>
+            </v-pane-header>
+
+            <v-pane-content>
+<ul> 
+                 <li  ng-repeat="row in displayedCollection3" type="item-text-wrap">
+         
+         <div class="col"> <span style="font-weight:bold"> Item Code </span> &nbsp; {{row.item_code}}</div>
+          <div class="col"><span style="font-weight:bold"> Descprition </span> &nbsp; {{row.xdesc}}</div>
+          <div class="col"><span style="font-weight:bold"> APPLICATION FEE(NGN)  </span> &nbsp; {{row.init_amt|currency:""}}</div>
+          <div class="col"><span style="font-weight:bold"> Tech  Amount  </span> &nbsp; {{row.tech_amt|currency:""}}</div>
+         <div class="col"><span style="font-weight:bold"> Amount  </span> &nbsp;{{row.amt|currency:""}}</div>
+          <div class="col"> <input type="text"  placeholder="Qty" ng-disabled="row.showbtn2" style="display:inline" ng-model="row.qt_code"></div>
+          <div class="col"><button id="btn-signup"  ng-show="showbtn2(row)" ng-click="EditRow5(row)" class="btn"  style="font-weight:bold ;font-size:10px ;" type="submit"> <i class="icon ion-plus-circled"></i>  </button>
+                    
+          <button id="btn-signup2" ng-show="showbtn3(row)" ng-click="EditRow6(row)" class="btn" style="font-weight:bold ;font-size:10px ;background-color:#BE1E2D" type="submit"> <i class="icon ion-close-circled icon3"></i> </button>
+          </div>
+           <hr/>
+      </li>
+
+      </ul>
+                
+            </v-pane-content>
+        </v-pane>
+
+    </v-accordion>
+
+    <br />
+
+       <div class="row">
+        <div class="col-md-7 col-md-offset-5">
+           
+          
+            <!--<span style="margin-left:8px;">or</span>-->
+            <button ng-click="submitForm()" class="btn-success btn-lg btn-space" style="font-weight:bold ;font-size:10px ;" type="submit">  Proceed &nbsp <i class="icon ion-arrow-right-c"></i> </button>
+        </div>
+
+       
+      
+
+    </div>
+
+
+</div>
 
 
 
-       <script id="templates/modal.html" type="text/ng-template">
-      <ion-modal-view>
-        <ion-header-bar class="bar bar-header bar-positive">
-          <h1 class="title">Fee Detail</h1>
-          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
-        </ion-header-bar>
-        <ion-content class="padding">
-          <table style="width:100%;" class="center-align" >
-    <tr>
-<td>
-APPLICATION FEE(NGN)
-</td>
-
-<td>
-{{appfee|currency:""}}
-</td>
-    </tr>
-
-    <tr>
-<td>
-TECH FEE(NGN)
-</td>
-
-<td>
-{{apptech_amt|currency:""}}
-</td>
-    </tr>
-
-     <tr>
-<td>
-AMOUNT(NGN)
-</td>
-
-<td>
-{{appamt|currency:""}}
-</td>
-    </tr>
-
-</table>
         </ion-content>
       </ion-modal-view>
     </script>
